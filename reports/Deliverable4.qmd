@@ -36,8 +36,8 @@ graph ER {
     layout=neato;
     scale=2;
     node [shape=box]; playlist, album, song, user, artist
-    node [shape=ellipse]; playlist_ID, playlist_name, user, description, album_ID, album_name, record_label, genre, song_ID, song_name, tempo, key, user_ID, user_name, password, account_type, listener_count, plays, song_number, album_classification, playlist_description, album_duration, song_duration, release_date, birth_date, debut_date, playlist_duration, artist_name
-    node [shape=diamond,style=filled,color=lightgrey]; has, "has ",is, " has", " has "
+    node [shape=ellipse]; playlist_ID, playlist_name, user, description, album_ID, album_name, record_label, genre, song_ID, song_name, tempo, key, user_ID, user_name, password, account_type, listener_count, plays, song_number, album_classification, playlist_description, album_duration, song_duration, release_date, birth_date, debut_date,playlist_duration, artist_name, artist_ID
+    node [shape=diamond,style=filled,color=lightgrey]; has, "has ",is, " has", " has ", "  has "
     
     playlist -- has [label="0...n",len=1.00]
     has -- song [label="1...n",len=1.00]
@@ -53,6 +53,9 @@ graph ER {
 
     album -- " has " [label="1",len=1.00]
     " has " -- song [label="1...n",len=1.00]
+
+    artist -- "  has " [label="1..n",len=1.00]
+    "  has " -- song [label="1...n",len=1.00]
     
     playlist -- playlist_ID
     playlist -- playlist_name
@@ -80,6 +83,7 @@ graph ER {
     user -- account_type
     user -- password
 
+    artist -- artist_ID
     artist -- description
     artist -- listener_count
     artist -- birth_date
@@ -94,12 +98,13 @@ graph ER {
 erDiagram
     PLAYLIST }o--o{ SONG : has
     ALBUM ||--|{ SONG : has
-    ARTIST ||--|{ ALBUM : has
+    ARTIST }|--|{ ALBUM : has
     USER ||--o{ PLAYLIST : has
     ARTIST |o--|| USER : is
+    ARTIST }|--|{ SONG : has
 
     PLAYLIST{
-        string playlist_ID PK
+        string ID PK
         string name
         string user_ID FK
         string description
@@ -108,42 +113,60 @@ erDiagram
     }
 
     ALBUM{
-        string album_ID PK
+        string ID PK
         string name
         string record_label
         string genre
-        string release_date
+        date release_date
         string classification
         int duration
         string artist_ID FK
     }
 
     SONG{
-        string song_ID PK
+        string ID PK
         string name
         int tempo
         string key
         int plays
         int duration
-        string artist_ID
+        string artist_ID FK
+        string album_ID FK
     } 
 
     USER {
+        string ID PK
         string user_name
         string password
-        string user_id PK
         string account_type
     }
 
     ARTIST {
+        string ID PK
         string artist_name
-        string birth_date
-        string songs FK
-        string albums FK
+        date birth_date
         string description
-        string debut_date
+        date debut_date
         int listener_count
     }
 
 
 ```
+
+# Relational Schemas
+
+user (ID [PK], user_name, password, account_type)
+
+artist (ID [PK], name, birth_date, description, debut_date, listener_count)
+
+song (ID [PK], name, tempo, key, plays, duration, artist_ID [FK], album_ID [FK])
+
+album (ID [PK], name, record_label, genre, release_date, classification, duraion, artist_ID[FK])
+
+playlist (ID [PK], name, description, duration, song_number, user_ID[FK])
+
+artist_song (ID [PK], artist_ID[FK], song_ID[FK])
+
+artist_album (ID [PK], artist_ID[FK], album_ID[FK])
+
+playlist_song (ID [PK], playlist_ID[FK], song_ID[FK])
