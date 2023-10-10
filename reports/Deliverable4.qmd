@@ -1,0 +1,149 @@
+---
+title: Group Project Deliverable 4
+date: 10/9/2023
+author: Rachel Farzan, Javeria Hanif, Feyza Sakin
+format:
+    html:
+        theme: cosmo
+        toc: true
+        embed-resources: true
+
+---
+
+# ER Diagrams
+### Chen Notation Diagram
+
+#### Questions:
+
+How should we approach songs/albums with multiple artists? For simplicity sake, should we just keep it at 1? That's how I currently have it
+
+Do we need both a username and userID? Maybe users are required to have a unique user ID
+
+Should artist be an extension of user? If we separate them, we could probably make "member" into its own entity
+
+#### Changes:
+
+Changed "producers" to "record label" to avoid the complexity of multiple producers
+
+Added "album classification", indicating whether an album is a single, EP, compilation, etc
+
+Removed the "most popular locaiton" attribute for artist. We can add it back, but I don't think they actually have that data on spotify :P
+
+Added foreign keys to connect entities in the crow's foot diagram
+
+```{dot}
+graph ER {
+    layout=neato;
+    scale=2;
+    node [shape=box]; playlist, album, song, user, artist
+    node [shape=ellipse]; playlist_ID, playlist_name, user, description, album_ID, album_name, record_label, genre, song_ID, song_name, tempo, key, user_ID, user_name, password, account_type, listener_count, plays, song_number, album_classification, playlist_description, album_duration, song_duration, release_date, birth_date, debut_date, playlist_duration, artist_name
+    node [shape=diamond,style=filled,color=lightgrey]; has, "has ",is, " has", " has "
+    
+    playlist -- has [label="0...n",len=1.00]
+    has -- song [label="1...n",len=1.00]
+
+    playlist -- "has " [label="0...n",len=1.00]
+    "has " -- user [label="1",len=1.00]
+
+    artist -- is [label="0...1",len=1.00]
+    is -- user [label="1",len=1.00]
+
+    artist -- " has" [label="1",len=1.00]
+    " has" -- album [label="1...n",len=1.00]
+
+    album -- " has " [label="1",len=1.00]
+    " has " -- song [label="1...n",len=1.00]
+    
+    playlist -- playlist_ID
+    playlist -- playlist_name
+    playlist -- song_number
+    playlist -- playlist_description
+    playlist -- playlist_duration
+    
+    album -- album_ID
+    album -- record_label
+    album -- album_classification
+    album -- genre
+    album -- album_name
+    album -- album_duration
+    album -- release_date
+
+    song -- song_ID
+    song -- song_name
+    song -- tempo
+    song -- key
+    song -- plays
+    song -- song_duration
+
+    user -- user_ID
+    user -- user_name
+    user -- account_type
+    user -- password
+
+    artist -- description
+    artist -- listener_count
+    artist -- birth_date
+    artist -- debut_date
+    artist -- artist_name
+
+} 
+```
+
+### Crow's Foot Diagram
+```{mermaid}
+erDiagram
+    PLAYLIST }o--o{ SONG : has
+    ALBUM ||--|{ SONG : has
+    ARTIST ||--|{ ALBUM : has
+    USER ||--o{ PLAYLIST : has
+    ARTIST |o--|| USER : is
+
+    PLAYLIST{
+        string playlist_ID PK
+        string name
+        string user_ID FK
+        string description
+        int duration
+        int song_number
+    }
+
+    ALBUM{
+        string album_ID PK
+        string name
+        string record_label
+        string genre
+        string release_date
+        string classification
+        int duration
+        string artist_ID FK
+    }
+
+    SONG{
+        string song_ID PK
+        string name
+        int tempo
+        string key
+        int plays
+        int duration
+        string artist_ID
+    } 
+
+    USER {
+        string user_name
+        string password
+        string user_id PK
+        string account_type
+    }
+
+    ARTIST {
+        string artist_name
+        string birth_date
+        string songs FK
+        string albums FK
+        string description
+        string debut_date
+        int listener_count
+    }
+
+
+```
