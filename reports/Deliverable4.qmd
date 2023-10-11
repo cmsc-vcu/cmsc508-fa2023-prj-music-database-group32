@@ -13,31 +13,13 @@ format:
 # ER Diagrams
 ### Chen Notation Diagram
 
-#### Questions:
-
-How should we approach songs/albums with multiple artists? For simplicity sake, should we just keep it at 1? That's how I currently have it
-
-Do we need both a username and userID? Maybe users are required to have a unique user ID
-
-Should artist be an extension of user? If we separate them, we could probably make "member" into its own entity
-
-#### Changes:
-
-Changed "producers" to "record label" to avoid the complexity of multiple producers
-
-Added "album classification", indicating whether an album is a single, EP, compilation, etc
-
-Removed the "most popular locaiton" attribute for artist. We can add it back, but I don't think they actually have that data on spotify :P
-
-Added foreign keys to connect entities in the crow's foot diagram
-
 ```{dot}
 graph ER {
     layout=neato;
     scale=2;
     node [shape=box]; playlist, album, song, user, artist
-    node [shape=ellipse]; playlist_ID, playlist_name, user, description, album_ID, album_name, record_label, genre, song_ID, song_name, tempo, key, user_ID, user_name, password, account_type, listener_count, plays, song_number, album_classification, playlist_description, album_duration, song_duration, release_date, birth_date, debut_date,playlist_duration, artist_name, artist_ID
-    node [shape=diamond,style=filled,color=lightgrey]; has, "has ",is, " has", " has ", "  has "
+    node [shape=ellipse]; playlist_ID, playlist_name, user, description, album_ID, album_name, record_label, genre, song_ID, song_name, tempo, key, user_ID, user_name, password, account_type, plays, song_number, album_classification, playlist_description, album_duration, song_duration, release_date, birth_date, debut_date,playlist_duration, artist_name, artist_ID, follower_count, following_count
+    node [shape=diamond,style=filled,color=lightgrey]; has, "has ",is, " has", " has ", "  has ", following
     
     playlist -- has [label="0...n",len=1.00]
     has -- song [label="1...n",len=1.00]
@@ -54,8 +36,11 @@ graph ER {
     album -- " has " [label="1",len=1.00]
     " has " -- song [label="1...n",len=1.00]
 
-    artist -- "  has " [label="1..n",len=1.00]
+    artist -- "  has " [label="1...n",len=1.00]
     "  has " -- song [label="1...n",len=1.00]
+
+    user -- following [label="0...n",len=1.00]
+    following -- user [label="0...n",len=1.00]
     
     playlist -- playlist_ID
     playlist -- playlist_name
@@ -82,10 +67,11 @@ graph ER {
     user -- user_name
     user -- account_type
     user -- password
+    user -- follower_count
+    user -- following_count
 
     artist -- artist_ID
     artist -- description
-    artist -- listener_count
     artist -- birth_date
     artist -- debut_date
     artist -- artist_name
@@ -139,6 +125,8 @@ erDiagram
         string user_name
         string password
         string account_type
+        int follower_count
+        int following_count
     }
 
     ARTIST {
@@ -147,26 +135,94 @@ erDiagram
         date birth_date
         string description
         date debut_date
-        int listener_count
     }
 
 
 ```
 
+### Design Notes
+
+One thought that we had was to possibly have an album be a more specific type of playlist (a playlist that only an artist can make). However, we also wanted ot include features that only playlists could have (i.e. discriptions). It also seemed unnecessary to connect albums and playlists, so we ultimately decided not to.
+
+We also had to consider which relationships to make many-to-many. Songs are often by multiple artist, so we made that relationship many-to-many. Though albums aren't as often by multiple artist, we thought it would be the most consistent to also make that relationship many-to-many. Though songs can also be on multiple albums, they often show up as separate songs on music apps like Spotify, so we decided to keep that relationship as one-to-many.
+
+[Add other trade-offs]
+
 # Relational Schemas
 
-user (ID [PK], user_name, password, account_type)
+user (ID [PK], user_name [NOT_NULL, UNIQUE], password [NOT_NULL], account_type [(free, premium, artist)])
 
-artist (ID [PK], name, birth_date, description, debut_date, listener_count)
+artist (ID [PK], name [NOT_NULL], birth_date [NOT_NULL], description, debut_date [NOT_NULL])
 
-song (ID [PK], name, tempo, key, plays, duration, artist_ID [FK], album_ID [FK])
+song (ID [PK], name [NOT_NULL], tempo, key, plays [NOT_NULL], duration [NOT_NULL], artist_ID [FK], album_ID [FK])
 
-album (ID [PK], name, record_label, genre, release_date, classification, duraion, artist_ID[FK])
+album (ID [PK], name [NOT_NULL], record_label [NOT_NULL], genre, release_date [NOT_NULL], classification [NOT_NULL], duration [NOT_NULL], artist_ID[FK])
 
-playlist (ID [PK], name, description, duration, song_number, user_ID[FK])
+playlist (ID [PK], name [NOT_NULL], description, duration [NOT_NULL], song_number [NOT_NULL], user_ID[FK])
 
 artist_song (ID [PK], artist_ID[FK], song_ID[FK])
 
+        FK(artist_ID) references artist.ID
+
+        FK(song_ID) references song.ID
+
 artist_album (ID [PK], artist_ID[FK], album_ID[FK])
 
+        FK(artist_ID) references artist.ID
+
+        FK(album_ID) references album.ID
+
 playlist_song (ID [PK], playlist_ID[FK], song_ID[FK])
+
+        FK(playlist_ID) references playlist.ID
+    
+        FK(song_ID) references song.ID
+
+
+following (ID [PK], follower_ID[FK], following_ID[FK])
+
+        FK(follower_ID) references user.ID
+
+        FK(following_ID) references user.ID
+
+# Functional Dependencies
+
+user (ID, user_name, password, account_type)
+
+        ID -> user_name, password, account_type
+
+artist (ID, name, birth_date, description, debut_date)
+
+        ID -> name, birth_date, description, debut_date
+
+song (ID, name, tempo, key, plays, duration, artist_ID, album_ID)
+
+        ID -> name, tempo, key, plays, duration, artist_ID, album_ID
+
+album (ID, name, record_label, genre, release_date, classification, duration, artist_ID)
+
+        ID -> name, record_label, genre, release_date, classification, duration, artist_ID
+
+playlist (ID, name, description, duration, song_number, user_ID)
+
+        ID -> name, description, duration, song_number, user_ID
+
+artist_song (ID, artist_ID, song_ID)
+
+        ID -> artist_ID, song_ID
+
+artist_album (ID, artist_ID, album_ID)
+
+        ID -> artist_ID, album_ID
+
+playlist_song (ID, playlist_ID, song_ID)
+
+        ID -> playlist_ID, song_ID
+
+following (ID, follower_ID, following_ID)
+
+        ID -> follower_ID, following_ID
+
+#### Normalization Notes
+
+Our relations are already in BCNF, as each relation consist of 1 functional dependency, where the candidate key determines everything else in the relation.

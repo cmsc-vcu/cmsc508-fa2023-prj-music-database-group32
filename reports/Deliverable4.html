@@ -3283,8 +3283,10 @@ z-index: 1000;
   <ul class="collapse">
   <li><a href="#chen-notation-diagram" id="toc-chen-notation-diagram" class="nav-link" data-scroll-target="#chen-notation-diagram">Chen Notation Diagram</a></li>
   <li><a href="#crows-foot-diagram" id="toc-crows-foot-diagram" class="nav-link" data-scroll-target="#crows-foot-diagram">Crow’s Foot Diagram</a></li>
+  <li><a href="#design-notes" id="toc-design-notes" class="nav-link" data-scroll-target="#design-notes">Design Notes</a></li>
   </ul></li>
   <li><a href="#relational-schemas" id="toc-relational-schemas" class="nav-link" data-scroll-target="#relational-schemas">Relational Schemas</a></li>
+  <li><a href="#functional-dependencies" id="toc-functional-dependencies" class="nav-link" data-scroll-target="#functional-dependencies">Functional Dependencies</a></li>
   </ul>
 </nav>
 </div>
@@ -3323,350 +3325,357 @@ z-index: 1000;
 <h1>ER Diagrams</h1>
 <section id="chen-notation-diagram" class="level3">
 <h3 class="anchored" data-anchor-id="chen-notation-diagram">Chen Notation Diagram</h3>
-<section id="questions" class="level4">
-<h4 class="anchored" data-anchor-id="questions">Questions:</h4>
-<p>How should we approach songs/albums with multiple artists? For simplicity sake, should we just keep it at 1? That’s how I currently have it</p>
-<p>Do we need both a username and userID? Maybe users are required to have a unique user ID</p>
-<p>Should artist be an extension of user? If we separate them, we could probably make “member” into its own entity</p>
-</section>
-<section id="changes" class="level4">
-<h4 class="anchored" data-anchor-id="changes">Changes:</h4>
-<p>Changed “producers” to “record label” to avoid the complexity of multiple producers</p>
-<p>Added “album classification”, indicating whether an album is a single, EP, compilation, etc</p>
-<p>Removed the “most popular locaiton” attribute for artist. We can add it back, but I don’t think they actually have that data on spotify :P</p>
-<p>Added foreign keys to connect entities in the crow’s foot diagram</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <div>
-<svg width="672" height="480" viewbox="0.00 0.00 1069.38 1006.47" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 1002.47)">
+<svg width="672" height="480" viewbox="0.00 0.00 1177.53 803.43" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 799.43)">
 <title>
 ER
 </title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-1002.47 1065.38,-1002.47 1065.38,4 -4,4"></polygon> <!-- playlist --> <g id="node1" class="node">
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-799.43 1173.53,-799.43 1173.53,4 -4,4"></polygon> <!-- playlist --> <g id="node1" class="node">
 <title>
 playlist
 </title>
-<polygon fill="none" stroke="black" points="502.83,-833.68 445.39,-833.68 445.39,-797.68 502.83,-797.68 502.83,-833.68"></polygon> <text text-anchor="middle" x="474.11" y="-811.48" font-family="Times,serif" font-size="14.00">playlist</text> </g> <!-- playlist_ID --> <g id="node6" class="node">
+<polygon fill="none" stroke="black" points="341.24,-212.59 283.8,-212.59 283.8,-176.59 341.24,-176.59 341.24,-212.59"></polygon> <text text-anchor="middle" x="312.52" y="-190.39" font-family="Times,serif" font-size="14.00">playlist</text> </g> <!-- playlist_ID --> <g id="node6" class="node">
 <title>
 playlist_ID
 </title>
-<ellipse fill="none" stroke="black" cx="375.66" cy="-953.43" rx="54.48" ry="18"></ellipse> <text text-anchor="middle" x="375.66" y="-949.23" font-family="Times,serif" font-size="14.00">playlist_ID</text> </g> <!-- playlist&#45;&#45;playlist_ID --> <g id="edge13" class="edge">
+<ellipse fill="none" stroke="black" cx="148.24" cy="-127.03" rx="54.48" ry="18"></ellipse> <text text-anchor="middle" x="148.24" y="-122.83" font-family="Times,serif" font-size="14.00">playlist_ID</text> </g> <!-- playlist&#45;&#45;playlist_ID --> <g id="edge15" class="edge">
 <title>
 playlist–playlist_ID
 </title>
-<path fill="none" stroke="black" d="M461.24,-833.69C442.26,-860.23 407.01,-909.56 388.22,-935.85"></path> </g> <!-- playlist_name --> <g id="node7" class="node">
+<path fill="none" stroke="black" d="M283.9,-182.83C255.68,-171.22 212.53,-153.47 182.5,-141.12"></path> </g> <!-- playlist_name --> <g id="node7" class="node">
 <title>
 playlist_name
 </title>
-<ellipse fill="none" stroke="black" cx="332.59" cy="-883.14" rx="65.42" ry="18"></ellipse> <text text-anchor="middle" x="332.59" y="-878.94" font-family="Times,serif" font-size="14.00">playlist_name</text> </g> <!-- playlist&#45;&#45;playlist_name --> <g id="edge14" class="edge">
+<ellipse fill="none" stroke="black" cx="270.06" cy="-18" rx="65.42" ry="18"></ellipse> <text text-anchor="middle" x="270.06" y="-13.8" font-family="Times,serif" font-size="14.00">playlist_name</text> </g> <!-- playlist&#45;&#45;playlist_name --> <g id="edge16" class="edge">
 <title>
 playlist–playlist_name
 </title>
-<path fill="none" stroke="black" d="M445.47,-829.33C422.29,-840.38 389.63,-855.95 365.4,-867.5"></path> </g> <!-- song_number --> <g id="node23" class="node">
+<path fill="none" stroke="black" d="M308.13,-176.36C299.98,-142.43 282.56,-69.99 274.42,-36.13"></path> </g> <!-- song_number --> <g id="node22" class="node">
 <title>
 song_number
 </title>
-<ellipse fill="none" stroke="black" cx="601.81" cy="-929.55" rx="63.72" ry="18"></ellipse> <text text-anchor="middle" x="601.81" y="-925.35" font-family="Times,serif" font-size="14.00">song_number</text> </g> <!-- playlist&#45;&#45;song_number --> <g id="edge15" class="edge">
+<ellipse fill="none" stroke="black" cx="204.64" cy="-65.83" rx="63.72" ry="18"></ellipse> <text text-anchor="middle" x="204.64" y="-61.63" font-family="Times,serif" font-size="14.00">song_number</text> </g> <!-- playlist&#45;&#45;song_number --> <g id="edge17" class="edge">
 <title>
 playlist–song_number
 </title>
-<path fill="none" stroke="black" d="M494.34,-833.72C518.54,-855.3 558.73,-891.14 582.51,-912.34"></path> </g> <!-- playlist_description --> <g id="node25" class="node">
+<path fill="none" stroke="black" d="M297.29,-176.42C276.61,-151.74 239.9,-107.92 219.45,-83.5"></path> </g> <!-- playlist_description --> <g id="node24" class="node">
 <title>
 playlist_description
 </title>
-<ellipse fill="none" stroke="black" cx="458.42" cy="-980.47" rx="87.42" ry="18"></ellipse> <text text-anchor="middle" x="458.42" y="-976.27" font-family="Times,serif" font-size="14.00">playlist_description</text> </g> <!-- playlist&#45;&#45;playlist_description --> <g id="edge16" class="edge">
+<ellipse fill="none" stroke="black" cx="162.98" cy="-203.58" rx="87.42" ry="18"></ellipse> <text text-anchor="middle" x="162.98" y="-199.38" font-family="Times,serif" font-size="14.00">playlist_description</text> </g> <!-- playlist&#45;&#45;playlist_description --> <g id="edge18" class="edge">
 <title>
 playlist–playlist_description
 </title>
-<path fill="none" stroke="black" d="M472.37,-833.95C469.35,-865.71 463.16,-930.73 460.15,-962.37"></path> </g> <!-- playlist_duration --> <g id="node31" class="node">
+<path fill="none" stroke="black" d="M283.68,-196.33C272.91,-196.97 260.05,-197.75 246.81,-198.54"></path> </g> <!-- playlist_duration --> <g id="node30" class="node">
 <title>
 playlist_duration
 </title>
-<ellipse fill="none" stroke="black" cx="543.17" cy="-979.61" rx="76.46" ry="18"></ellipse> <text text-anchor="middle" x="543.17" y="-975.41" font-family="Times,serif" font-size="14.00">playlist_duration</text> </g> <!-- playlist&#45;&#45;playlist_duration --> <g id="edge17" class="edge">
+<ellipse fill="none" stroke="black" cx="343.16" cy="-36.15" rx="76.46" ry="18"></ellipse> <text text-anchor="middle" x="343.16" y="-31.95" font-family="Times,serif" font-size="14.00">playlist_duration</text> </g> <!-- playlist&#45;&#45;playlist_duration --> <g id="edge19" class="edge">
 <title>
 playlist–playlist_duration
 </title>
-<path fill="none" stroke="black" d="M481.76,-833.85C495.04,-865.36 522.18,-929.79 535.48,-961.36"></path> </g> <!-- has --> <g id="node34" class="node">
+<path fill="none" stroke="black" d="M316.03,-176.42C321.91,-146.02 333.68,-85.19 339.6,-54.61"></path> </g> <!-- has --> <g id="node35" class="node">
 <title>
 has
 </title>
-<polygon fill="lightgrey" stroke="lightgrey" points="598.35,-704.13 564.73,-686.13 598.35,-668.13 631.98,-686.13 598.35,-704.13"></polygon> <text text-anchor="middle" x="598.35" y="-681.93" font-family="Times,serif" font-size="14.00">has</text> </g> <!-- playlist&#45;&#45;has --> <g id="edge1" class="edge">
+<polygon fill="lightgrey" stroke="lightgrey" points="494.01,-227.7 460.39,-209.7 494.01,-191.7 527.64,-209.7 494.01,-227.7"></polygon> <text text-anchor="middle" x="494.01" y="-205.5" font-family="Times,serif" font-size="14.00">has</text> </g> <!-- playlist&#45;&#45;has --> <g id="edge1" class="edge">
 <title>
 playlist–has
 </title>
-<path fill="none" stroke="black" d="M491.38,-797.67C517.12,-770.83 564.85,-721.06 586.78,-698.2"></path> <text text-anchor="middle" x="526.83" y="-752.13" font-family="Times,serif" font-size="14.00">0…n</text> </g> <!-- has  --> <g id="node35" class="node">
+<path fill="none" stroke="black" d="M341.28,-196.99C375.06,-199.8 430.8,-204.44 464.79,-207.27"></path> <text text-anchor="middle" x="390.78" y="-206.33" font-family="Times,serif" font-size="14.00">0…n</text> </g> <!-- has  --> <g id="node36" class="node">
 <title>
 has
 </title>
-<polygon fill="lightgrey" stroke="lightgrey" points="323,-724.21 285.55,-706.21 323,-688.21 360.46,-706.21 323,-724.21"></polygon> <text text-anchor="middle" x="323" y="-702.01" font-family="Times,serif" font-size="14.00">has </text> </g> <!-- playlist&#45;&#45;has  --> <g id="edge3" class="edge">
+<polygon fill="lightgrey" stroke="lightgrey" points="261.23,-391.61 223.78,-373.61 261.23,-355.61 298.69,-373.61 261.23,-391.61"></polygon> <text text-anchor="middle" x="261.23" y="-369.41" font-family="Times,serif" font-size="14.00">has </text> </g> <!-- playlist&#45;&#45;has  --> <g id="edge3" class="edge">
 <title>
 playlist–has
 </title>
-<path fill="none" stroke="black" d="M449.16,-797.6C417.64,-774.77 364.38,-736.18 338.3,-717.29"></path> <text text-anchor="middle" x="381.48" y="-761.65" font-family="Times,serif" font-size="14.00">0…n</text> </g> <!-- album --> <g id="node2" class="node">
+<path fill="none" stroke="black" d="M307.32,-212.74C297.26,-247.85 275.29,-324.54 265.78,-357.75"></path> <text text-anchor="middle" x="274.3" y="-289.45" font-family="Times,serif" font-size="14.00">0…n</text> </g> <!-- album --> <g id="node2" class="node">
 <title>
 album
 </title>
-<polygon fill="none" stroke="black" points="844.76,-229.53 790.76,-229.53 790.76,-193.53 844.76,-193.53 844.76,-229.53"></polygon> <text text-anchor="middle" x="817.76" y="-207.33" font-family="Times,serif" font-size="14.00">album</text> </g> <!-- album_ID --> <g id="node9" class="node">
+<polygon fill="none" stroke="black" points="969.85,-478.03 915.85,-478.03 915.85,-442.03 969.85,-442.03 969.85,-478.03"></polygon> <text text-anchor="middle" x="942.85" y="-455.83" font-family="Times,serif" font-size="14.00">album</text> </g> <!-- album_ID --> <g id="node9" class="node">
 <title>
 album_ID
 </title>
-<ellipse fill="none" stroke="black" cx="822.32" cy="-18" rx="50.39" ry="18"></ellipse> <text text-anchor="middle" x="822.32" y="-13.8" font-family="Times,serif" font-size="14.00">album_ID</text> </g> <!-- album&#45;&#45;album_ID --> <g id="edge18" class="edge">
+<ellipse fill="none" stroke="black" cx="1016.99" cy="-323.07" rx="50.39" ry="18"></ellipse> <text text-anchor="middle" x="1016.99" y="-318.87" font-family="Times,serif" font-size="14.00">album_ID</text> </g> <!-- album&#45;&#45;album_ID --> <g id="edge20" class="edge">
 <title>
 album–album_ID
 </title>
-<path fill="none" stroke="black" d="M818.19,-193.32C819.06,-156.34 821.03,-72.84 821.89,-36.02"></path> </g> <!-- album_name --> <g id="node10" class="node">
+<path fill="none" stroke="black" d="M952.7,-441.84C966.96,-415.5 993.19,-367.04 1007.34,-340.9"></path> </g> <!-- album_name --> <g id="node10" class="node">
 <title>
 album_name
 </title>
-<ellipse fill="none" stroke="black" cx="1000.46" cy="-222.83" rx="60.83" ry="18"></ellipse> <text text-anchor="middle" x="1000.46" y="-218.63" font-family="Times,serif" font-size="14.00">album_name</text> </g> <!-- album&#45;&#45;album_name --> <g id="edge22" class="edge">
+<ellipse fill="none" stroke="black" cx="1103.02" cy="-419.54" rx="60.83" ry="18"></ellipse> <text text-anchor="middle" x="1103.02" y="-415.34" font-family="Times,serif" font-size="14.00">album_name</text> </g> <!-- album&#45;&#45;album_name --> <g id="edge24" class="edge">
 <title>
 album–album_name
 </title>
-<path fill="none" stroke="black" d="M845.12,-213.22C870.3,-214.77 908.53,-217.14 940.76,-219.13"></path> </g> <!-- record_label --> <g id="node11" class="node">
+<path fill="none" stroke="black" d="M970.02,-453.16C993.67,-447.18 1028.47,-438.39 1056.54,-431.29"></path> </g> <!-- record_label --> <g id="node11" class="node">
 <title>
 record_label
 </title>
-<ellipse fill="none" stroke="black" cx="932.8" cy="-75.31" rx="59.09" ry="18"></ellipse> <text text-anchor="middle" x="932.8" y="-71.11" font-family="Times,serif" font-size="14.00">record_label</text> </g> <!-- album&#45;&#45;record_label --> <g id="edge19" class="edge">
+<ellipse fill="none" stroke="black" cx="1084.89" cy="-343.18" rx="59.09" ry="18"></ellipse> <text text-anchor="middle" x="1084.89" y="-338.98" font-family="Times,serif" font-size="14.00">record_label</text> </g> <!-- album&#45;&#45;record_label --> <g id="edge21" class="edge">
 <title>
 album–record_label
 </title>
-<path fill="none" stroke="black" d="M833.04,-193.44C855.17,-167.24 895.88,-119.04 917.83,-93.04"></path> </g> <!-- genre --> <g id="node12" class="node">
+<path fill="none" stroke="black" d="M964.73,-442.03C991.82,-419.75 1037.59,-382.09 1064.14,-360.25"></path> </g> <!-- genre --> <g id="node12" class="node">
 <title>
 genre
 </title>
-<ellipse fill="none" stroke="black" cx="741.82" cy="-57.25" rx="32.46" ry="18"></ellipse> <text text-anchor="middle" x="741.82" y="-53.05" font-family="Times,serif" font-size="14.00">genre</text> </g> <!-- album&#45;&#45;genre --> <g id="edge21" class="edge">
+<ellipse fill="none" stroke="black" cx="971.21" cy="-588.08" rx="32.46" ry="18"></ellipse> <text text-anchor="middle" x="971.21" y="-583.88" font-family="Times,serif" font-size="14.00">genre</text> </g> <!-- album&#45;&#45;genre --> <g id="edge23" class="edge">
 <title>
 album–genre
 </title>
-<path fill="none" stroke="black" d="M808.75,-193.22C794.06,-163.37 765.12,-104.58 750.59,-75.05"></path> </g> <!-- album_classification --> <g id="node24" class="node">
+<path fill="none" stroke="black" d="M946.85,-478.1C952.26,-502.51 961.83,-545.74 967.23,-570.1"></path> </g> <!-- album_classification --> <g id="node23" class="node">
 <title>
 album_classification
 </title>
-<ellipse fill="none" stroke="black" cx="962.07" cy="-282.34" rx="90.9" ry="18"></ellipse> <text text-anchor="middle" x="962.07" y="-278.14" font-family="Times,serif" font-size="14.00">album_classification</text> </g> <!-- album&#45;&#45;album_classification --> <g id="edge20" class="edge">
+<ellipse fill="none" stroke="black" cx="1078.58" cy="-572.46" rx="90.9" ry="18"></ellipse> <text text-anchor="middle" x="1078.58" y="-568.26" font-family="Times,serif" font-size="14.00">album_classification</text> </g> <!-- album&#45;&#45;album_classification --> <g id="edge22" class="edge">
 <title>
 album–album_classification
 </title>
-<path fill="none" stroke="black" d="M844.91,-224.84C868.42,-236.38 902.55,-253.13 927.92,-265.58"></path> </g> <!-- album_duration --> <g id="node26" class="node">
+<path fill="none" stroke="black" d="M964.66,-478.09C990.14,-499.2 1032.01,-533.89 1057.27,-554.81"></path> </g> <!-- album_duration --> <g id="node25" class="node">
 <title>
 album_duration
 </title>
-<ellipse fill="none" stroke="black" cx="974.18" cy="-149.82" rx="72.37" ry="18"></ellipse> <text text-anchor="middle" x="974.18" y="-145.62" font-family="Times,serif" font-size="14.00">album_duration</text> </g> <!-- album&#45;&#45;album_duration --> <g id="edge23" class="edge">
+<ellipse fill="none" stroke="black" cx="1011.5" cy="-642.22" rx="72.37" ry="18"></ellipse> <text text-anchor="middle" x="1011.5" y="-638.02" font-family="Times,serif" font-size="14.00">album_duration</text> </g> <!-- album&#45;&#45;album_duration --> <g id="edge25" class="edge">
 <title>
 album–album_duration
 </title>
-<path fill="none" stroke="black" d="M845.01,-200.78C870.04,-190.9 907.42,-176.16 935.53,-165.07"></path> </g> <!-- release_date --> <g id="node28" class="node">
+<path fill="none" stroke="black" d="M949.69,-478.17C962.84,-513.09 991.56,-589.3 1004.7,-624.16"></path> </g> <!-- release_date --> <g id="node27" class="node">
 <title>
 release_date
 </title>
-<ellipse fill="none" stroke="black" cx="843.6" cy="-91.51" rx="58.5" ry="18"></ellipse> <text text-anchor="middle" x="843.6" y="-87.31" font-family="Times,serif" font-size="14.00">release_date</text> </g> <!-- album&#45;&#45;release_date --> <g id="edge24" class="edge">
+<ellipse fill="none" stroke="black" cx="1104.46" cy="-496.32" rx="58.5" ry="18"></ellipse> <text text-anchor="middle" x="1104.46" y="-492.12" font-family="Times,serif" font-size="14.00">release_date</text> </g> <!-- album&#45;&#45;release_date --> <g id="edge26" class="edge">
 <title>
 album–release_date
 </title>
-<path fill="none" stroke="black" d="M821.69,-193.3C826.57,-170.61 834.86,-132.1 839.73,-109.52"></path> </g> <!--  has  --> <g id="node38" class="node">
+<path fill="none" stroke="black" d="M969.9,-466.1C993.62,-471.43 1028.66,-479.3 1057.03,-485.67"></path> </g> <!--  has  --> <g id="node39" class="node">
 <title>
 has
 </title>
-<polygon fill="lightgrey" stroke="lightgrey" points="808.81,-402.16 768.02,-384.16 808.81,-366.16 849.59,-384.16 808.81,-402.16"></polygon> <text text-anchor="middle" x="808.81" y="-379.96" font-family="Times,serif" font-size="14.00"> has </text> </g> <!-- album&#45;&#45; has  --> <g id="edge9" class="edge">
+<polygon fill="lightgrey" stroke="lightgrey" points="836.2,-340.31 795.42,-322.31 836.2,-304.31 876.99,-322.31 836.2,-340.31"></polygon> <text text-anchor="middle" x="836.2" y="-318.11" font-family="Times,serif" font-size="14.00"> has </text> </g> <!-- album&#45;&#45; has  --> <g id="edge9" class="edge">
 <title>
 album– has
 </title>
-<path fill="none" stroke="black" d="M816.82,-229.67C815.09,-263 811.43,-333.56 809.72,-366.51"></path> <text text-anchor="middle" x="809.77" y="-302.29" font-family="Times,serif" font-size="14.00">1</text> </g> <!-- song --> <g id="node3" class="node">
+<path fill="none" stroke="black" d="M928.91,-442.03C907.23,-414.03 865.92,-360.69 846.62,-335.77"></path> <text text-anchor="middle" x="884.27" y="-393.1" font-family="Times,serif" font-size="14.00">1</text> </g> <!-- song --> <g id="node3" class="node">
 <title>
 song
 </title>
-<polygon fill="none" stroke="black" points="762.66,-559.55 708.66,-559.55 708.66,-523.55 762.66,-523.55 762.66,-559.55"></polygon> <text text-anchor="middle" x="735.66" y="-537.35" font-family="Times,serif" font-size="14.00">song</text> </g> <!-- song_ID --> <g id="node13" class="node">
+<polygon fill="none" stroke="black" points="708.22,-248.58 654.22,-248.58 654.22,-212.58 708.22,-212.58 708.22,-248.58"></polygon> <text text-anchor="middle" x="681.22" y="-226.38" font-family="Times,serif" font-size="14.00">song</text> </g> <!-- song_ID --> <g id="node13" class="node">
 <title>
 song_ID
 </title>
-<ellipse fill="none" stroke="black" cx="923.95" cy="-561.29" rx="44.1" ry="18"></ellipse> <text text-anchor="middle" x="923.95" y="-557.09" font-family="Times,serif" font-size="14.00">song_ID</text> </g> <!-- song&#45;&#45;song_ID --> <g id="edge25" class="edge">
+<ellipse fill="none" stroke="black" cx="788.31" cy="-67.46" rx="44.1" ry="18"></ellipse> <text text-anchor="middle" x="788.31" y="-63.26" font-family="Times,serif" font-size="14.00">song_ID</text> </g> <!-- song&#45;&#45;song_ID --> <g id="edge27" class="edge">
 <title>
 song–song_ID
 </title>
-<path fill="none" stroke="black" d="M763.04,-544.42C793.94,-547.66 844.62,-552.97 880.85,-556.77"></path> </g> <!-- song_name --> <g id="node14" class="node">
+<path fill="none" stroke="black" d="M693.09,-212.5C713.78,-180.98 756.21,-116.35 776.71,-85.13"></path> </g> <!-- song_name --> <g id="node14" class="node">
 <title>
 song_name
 </title>
-<ellipse fill="none" stroke="black" cx="898.01" cy="-631.75" rx="55.04" ry="18"></ellipse> <text text-anchor="middle" x="898.01" y="-627.55" font-family="Times,serif" font-size="14.00">song_name</text> </g> <!-- song&#45;&#45;song_name --> <g id="edge26" class="edge">
+<ellipse fill="none" stroke="black" cx="835.65" cy="-132.36" rx="55.04" ry="18"></ellipse> <text text-anchor="middle" x="835.65" y="-128.16" font-family="Times,serif" font-size="14.00">song_name</text> </g> <!-- song&#45;&#45;song_name --> <g id="edge28" class="edge">
 <title>
 song–song_name
 </title>
-<path fill="none" stroke="black" d="M762.83,-556.65C792.53,-573.15 839.88,-599.45 869.93,-616.15"></path> </g> <!-- tempo --> <g id="node15" class="node">
+<path fill="none" stroke="black" d="M708.48,-213.24C737.31,-194.9 782.43,-166.2 810.46,-148.38"></path> </g> <!-- tempo --> <g id="node15" class="node">
 <title>
 tempo
 </title>
-<ellipse fill="none" stroke="black" cx="779.97" cy="-691.45" rx="35.35" ry="18"></ellipse> <text text-anchor="middle" x="779.97" y="-687.25" font-family="Times,serif" font-size="14.00">tempo</text> </g> <!-- song&#45;&#45;tempo --> <g id="edge27" class="edge">
+<ellipse fill="none" stroke="black" cx="780.21" cy="-186.51" rx="35.35" ry="18"></ellipse> <text text-anchor="middle" x="780.21" y="-182.31" font-family="Times,serif" font-size="14.00">tempo</text> </g> <!-- song&#45;&#45;tempo --> <g id="edge29" class="edge">
 <title>
 song–tempo
 </title>
-<path fill="none" stroke="black" d="M741,-559.63C749.52,-588.44 766.07,-644.45 774.6,-673.3"></path> </g> <!-- key --> <g id="node16" class="node">
+<path fill="none" stroke="black" d="M708.27,-218.53C722.35,-212.27 739.51,-204.63 753.54,-198.38"></path> </g> <!-- key --> <g id="node16" class="node">
 <title>
 key
 </title>
-<ellipse fill="none" stroke="black" cx="860.14" cy="-518.16" rx="27" ry="18"></ellipse> <text text-anchor="middle" x="860.14" y="-513.96" font-family="Times,serif" font-size="14.00">key</text> </g> <!-- song&#45;&#45;key --> <g id="edge28" class="edge">
+<ellipse fill="none" stroke="black" cx="717.63" cy="-48.78" rx="27" ry="18"></ellipse> <text text-anchor="middle" x="717.63" y="-44.58" font-family="Times,serif" font-size="14.00">key</text> </g> <!-- song&#45;&#45;key --> <g id="edge30" class="edge">
 <title>
 song–key
 </title>
-<path fill="none" stroke="black" d="M762.67,-536.47C783.83,-532.5 813.1,-527 834.03,-523.06"></path> </g> <!-- plays --> <g id="node22" class="node">
+<path fill="none" stroke="black" d="M684.85,-212.48C691.82,-177.63 707.05,-101.59 714.02,-66.81"></path> </g> <!-- plays --> <g id="node21" class="node">
 <title>
 plays
 </title>
-<ellipse fill="none" stroke="black" cx="704.72" cy="-633.76" rx="31.34" ry="18"></ellipse> <text text-anchor="middle" x="704.72" y="-629.56" font-family="Times,serif" font-size="14.00">plays</text> </g> <!-- song&#45;&#45;plays --> <g id="edge29" class="edge">
+<ellipse fill="none" stroke="black" cx="615.06" cy="-131.2" rx="31.34" ry="18"></ellipse> <text text-anchor="middle" x="615.06" y="-127" font-family="Times,serif" font-size="14.00">plays</text> </g> <!-- song&#45;&#45;plays --> <g id="edge31" class="edge">
 <title>
 song–plays
 </title>
-<path fill="none" stroke="black" d="M729.54,-559.77C724.08,-576.04 716.14,-599.73 710.71,-615.89"></path> </g> <!-- song_duration --> <g id="node27" class="node">
+<path fill="none" stroke="black" d="M669.09,-212.35C656.93,-194.08 638.35,-166.18 626.46,-148.31"></path> </g> <!-- song_duration --> <g id="node26" class="node">
 <title>
 song_duration
 </title>
-<ellipse fill="none" stroke="black" cx="854.06" cy="-689.72" rx="66.08" ry="18"></ellipse> <text text-anchor="middle" x="854.06" y="-685.52" font-family="Times,serif" font-size="14.00">song_duration</text> </g> <!-- song&#45;&#45;song_duration --> <g id="edge30" class="edge">
+<ellipse fill="none" stroke="black" cx="644.91" cy="-56" rx="66.08" ry="18"></ellipse> <text text-anchor="middle" x="644.91" y="-51.8" font-family="Times,serif" font-size="14.00">song_duration</text> </g> <!-- song&#45;&#45;song_duration --> <g id="edge32" class="edge">
 <title>
 song–song_duration
 </title>
-<path fill="none" stroke="black" d="M750.17,-559.72C773.02,-588.31 817.1,-643.47 839.79,-671.86"></path> </g> <!-- user --> <g id="node4" class="node">
+<path fill="none" stroke="black" d="M677.47,-212.55C670.51,-179.1 655.68,-107.77 648.69,-74.19"></path> </g> <!-- user --> <g id="node4" class="node">
 <title>
 user
 </title>
-<polygon fill="none" stroke="black" points="247.01,-571.68 193.01,-571.68 193.01,-535.68 247.01,-535.68 247.01,-571.68"></polygon> <text text-anchor="middle" x="220.01" y="-549.48" font-family="Times,serif" font-size="14.00">user</text> </g> <!-- user_ID --> <g id="node17" class="node">
+<polygon fill="none" stroke="black" points="277.73,-580.56 223.73,-580.56 223.73,-544.56 277.73,-544.56 277.73,-580.56"></polygon> <text text-anchor="middle" x="250.73" y="-558.36" font-family="Times,serif" font-size="14.00">user</text> </g> <!-- user_ID --> <g id="node17" class="node">
 <title>
 user_ID
 </title>
-<ellipse fill="none" stroke="black" cx="88.67" cy="-438.83" rx="42.29" ry="18"></ellipse> <text text-anchor="middle" x="88.67" y="-434.63" font-family="Times,serif" font-size="14.00">user_ID</text> </g> <!-- user&#45;&#45;user_ID --> <g id="edge31" class="edge">
+<ellipse fill="none" stroke="black" cx="142.87" cy="-476.19" rx="42.29" ry="18"></ellipse> <text text-anchor="middle" x="142.87" y="-471.99" font-family="Times,serif" font-size="14.00">user_ID</text> </g> <!-- user&#45;&#45;user_ID --> <g id="edge33" class="edge">
 <title>
 user–user_ID
 </title>
-<path fill="none" stroke="black" d="M199.2,-535.48C173.88,-513.35 131.52,-476.31 107.26,-455.09"></path> </g> <!-- user_name --> <g id="node18" class="node">
+<path fill="none" stroke="black" d="M228.12,-544.45C208.85,-529.02 181.4,-507.05 162.91,-492.23"></path> </g> <!-- user_name --> <g id="node18" class="node">
 <title>
 user_name
 </title>
-<ellipse fill="none" stroke="black" cx="116.69" cy="-677.86" rx="52.73" ry="18"></ellipse> <text text-anchor="middle" x="116.69" y="-673.66" font-family="Times,serif" font-size="14.00">user_name</text> </g> <!-- user&#45;&#45;user_name --> <g id="edge32" class="edge">
+<ellipse fill="none" stroke="black" cx="161.05" cy="-707.99" rx="52.73" ry="18"></ellipse> <text text-anchor="middle" x="161.05" y="-703.79" font-family="Times,serif" font-size="14.00">user_name</text> </g> <!-- user&#45;&#45;user_name --> <g id="edge34" class="edge">
 <title>
 user–user_name
 </title>
-<path fill="none" stroke="black" d="M204.98,-571.74C185.28,-595.42 150.94,-636.69 131.39,-660.18"></path> </g> <!-- password --> <g id="node19" class="node">
+<path fill="none" stroke="black" d="M239.56,-580.68C222.28,-608.7 189.28,-662.21 172.09,-690.09"></path> </g> <!-- password --> <g id="node19" class="node">
 <title>
 password
 </title>
-<ellipse fill="none" stroke="black" cx="52.23" cy="-514.79" rx="47.53" ry="18"></ellipse> <text text-anchor="middle" x="52.23" y="-510.59" font-family="Times,serif" font-size="14.00">password</text> </g> <!-- user&#45;&#45;password --> <g id="edge34" class="edge">
+<ellipse fill="none" stroke="black" cx="94.73" cy="-661.3" rx="47.53" ry="18"></ellipse> <text text-anchor="middle" x="94.73" y="-657.1" font-family="Times,serif" font-size="14.00">password</text> </g> <!-- user&#45;&#45;password --> <g id="edge36" class="edge">
 <title>
 user–password
 </title>
-<path fill="none" stroke="black" d="M192.68,-547.35C165.66,-541.08 123.98,-531.42 93.04,-524.25"></path> </g> <!-- account_type --> <g id="node20" class="node">
+<path fill="none" stroke="black" d="M223.56,-579.76C194.14,-598.38 147.64,-627.81 119.29,-645.76"></path> </g> <!-- account_type --> <g id="node20" class="node">
 <title>
 account_type
 </title>
-<ellipse fill="none" stroke="black" cx="62.52" cy="-606.28" rx="62.54" ry="18"></ellipse> <text text-anchor="middle" x="62.52" y="-602.08" font-family="Times,serif" font-size="14.00">account_type</text> </g> <!-- user&#45;&#45;account_type --> <g id="edge33" class="edge">
+<ellipse fill="none" stroke="black" cx="104.53" cy="-586.3" rx="62.54" ry="18"></ellipse> <text text-anchor="middle" x="104.53" y="-582.1" font-family="Times,serif" font-size="14.00">account_type</text> </g> <!-- user&#45;&#45;account_type --> <g id="edge35" class="edge">
 <title>
 user–account_type
 </title>
-<path fill="none" stroke="black" d="M192.93,-562.72C168.31,-570.95 131.61,-583.2 103.42,-592.62"></path> </g> <!-- artist --> <g id="node5" class="node">
+<path fill="none" stroke="black" d="M223.58,-566.97C205.49,-569.91 181.1,-573.87 159.1,-577.44"></path> </g> <!-- follower_count --> <g id="node33" class="node">
+<title>
+follower_count
+</title>
+<ellipse fill="none" stroke="black" cx="70.03" cy="-514.31" rx="70.07" ry="18"></ellipse> <text text-anchor="middle" x="70.03" y="-510.11" font-family="Times,serif" font-size="14.00">follower_count</text> </g> <!-- user&#45;&#45;follower_count --> <g id="edge37" class="edge">
+<title>
+user–follower_count
+</title>
+<path fill="none" stroke="black" d="M223.68,-555.33C196.02,-547.95 152.44,-536.31 118.75,-527.32"></path> </g> <!-- following_count --> <g id="node34" class="node">
+<title>
+following_count
+</title>
+<ellipse fill="none" stroke="black" cx="226.1" cy="-752.07" rx="74.74" ry="18"></ellipse> <text text-anchor="middle" x="226.1" y="-747.87" font-family="Times,serif" font-size="14.00">following_count</text> </g> <!-- user&#45;&#45;following_count --> <g id="edge38" class="edge">
+<title>
+user–following_count
+</title>
+<path fill="none" stroke="black" d="M248.37,-580.73C243.66,-616.95 233.15,-697.77 228.45,-733.95"></path> </g> <!-- following --> <g id="node41" class="node">
+<title>
+following
+</title>
+<polygon fill="lightgrey" stroke="lightgrey" points="280.65,-719.48 211.72,-701.48 280.65,-683.48 349.59,-701.48 280.65,-719.48"></polygon> <text text-anchor="middle" x="280.65" y="-697.28" font-family="Times,serif" font-size="14.00">following</text> </g> <!-- user&#45;&#45;following --> <g id="edge13" class="edge">
+<title>
+user–following
+</title>
+<path fill="none" stroke="black" d="M249.89,-580.56C252.86,-607.83 263.9,-659.13 272.43,-685.28"></path> <text text-anchor="middle" x="248.91" y="-637.12" font-family="Times,serif" font-size="14.00">0…n</text> </g> <!-- artist --> <g id="node5" class="node">
 <title>
 artist
 </title>
-<polygon fill="none" stroke="black" points="512.1,-303.77 458.1,-303.77 458.1,-267.77 512.1,-267.77 512.1,-303.77"></polygon> <text text-anchor="middle" x="485.1" y="-281.57" font-family="Times,serif" font-size="14.00">artist</text> </g> <!-- description --> <g id="node8" class="node">
+<polygon fill="none" stroke="black" points="653.92,-598.95 599.92,-598.95 599.92,-562.95 653.92,-562.95 653.92,-598.95"></polygon> <text text-anchor="middle" x="626.92" y="-576.75" font-family="Times,serif" font-size="14.00">artist</text> </g> <!-- description --> <g id="node8" class="node">
 <title>
 description
 </title>
-<ellipse fill="none" stroke="black" cx="464.6" cy="-98.71" rx="53.89" ry="18"></ellipse> <text text-anchor="middle" x="464.6" y="-94.51" font-family="Times,serif" font-size="14.00">description</text> </g> <!-- artist&#45;&#45;description --> <g id="edge36" class="edge">
+<ellipse fill="none" stroke="black" cx="720.27" cy="-682.96" rx="53.89" ry="18"></ellipse> <text text-anchor="middle" x="720.27" y="-678.76" font-family="Times,serif" font-size="14.00">description</text> </g> <!-- artist&#45;&#45;description --> <g id="edge40" class="edge">
 <title>
 artist–description
 </title>
-<path fill="none" stroke="black" d="M483.09,-267.49C479.16,-231.64 470.49,-152.47 466.58,-116.78"></path> </g> <!-- listener_count --> <g id="node21" class="node">
-<title>
-listener_count
-</title>
-<ellipse fill="none" stroke="black" cx="329.49" cy="-247.38" rx="65.99" ry="18"></ellipse> <text text-anchor="middle" x="329.49" y="-243.18" font-family="Times,serif" font-size="14.00">listener_count</text> </g> <!-- artist&#45;&#45;listener_count --> <g id="edge37" class="edge">
-<title>
-artist–listener_count
-</title>
-<path fill="none" stroke="black" d="M457.99,-279.08C436.14,-273.69 404.83,-265.96 378.58,-259.49"></path> </g> <!-- birth_date --> <g id="node29" class="node">
+<path fill="none" stroke="black" d="M643.61,-599.19C660.81,-617.99 687.43,-647.08 704.35,-665.56"></path> </g> <!-- birth_date --> <g id="node28" class="node">
 <title>
 birth_date
 </title>
-<ellipse fill="none" stroke="black" cx="390.35" cy="-124.4" rx="50.38" ry="18"></ellipse> <text text-anchor="middle" x="390.35" y="-120.2" font-family="Times,serif" font-size="14.00">birth_date</text> </g> <!-- artist&#45;&#45;birth_date --> <g id="edge38" class="edge">
+<ellipse fill="none" stroke="black" cx="569.01" cy="-740.61" rx="50.38" ry="18"></ellipse> <text text-anchor="middle" x="569.01" y="-736.41" font-family="Times,serif" font-size="14.00">birth_date</text> </g> <!-- artist&#45;&#45;birth_date --> <g id="edge41" class="edge">
 <title>
 artist–birth_date
 </title>
-<path fill="none" stroke="black" d="M474.41,-267.57C456.12,-236.41 419.02,-173.22 400.85,-142.28"></path> </g> <!-- debut_date --> <g id="node30" class="node">
+<path fill="none" stroke="black" d="M620.39,-598.96C609.27,-629.62 586.77,-691.64 575.6,-722.43"></path> </g> <!-- debut_date --> <g id="node29" class="node">
 <title>
 debut_date
 </title>
-<ellipse fill="none" stroke="black" cx="505.3" cy="-160.98" rx="53.31" ry="18"></ellipse> <text text-anchor="middle" x="505.3" y="-156.78" font-family="Times,serif" font-size="14.00">debut_date</text> </g> <!-- artist&#45;&#45;debut_date --> <g id="edge39" class="edge">
+<ellipse fill="none" stroke="black" cx="555.95" cy="-656.63" rx="53.31" ry="18"></ellipse> <text text-anchor="middle" x="555.95" y="-652.43" font-family="Times,serif" font-size="14.00">debut_date</text> </g> <!-- artist&#45;&#45;debut_date --> <g id="edge42" class="edge">
 <title>
 artist–debut_date
 </title>
-<path fill="none" stroke="black" d="M488.03,-267.62C491.86,-243.96 498.52,-202.82 502.35,-179.15"></path> </g> <!-- artist_name --> <g id="node32" class="node">
+<path fill="none" stroke="black" d="M609.74,-599.27C598.34,-611.43 583.46,-627.29 572.24,-639.26"></path> </g> <!-- artist_name --> <g id="node31" class="node">
 <title>
 artist_name
 </title>
-<ellipse fill="none" stroke="black" cx="393.73" cy="-321.52" rx="56.17" ry="18"></ellipse> <text text-anchor="middle" x="393.73" y="-317.32" font-family="Times,serif" font-size="14.00">artist_name</text> </g> <!-- artist&#45;&#45;artist_name --> <g id="edge40" class="edge">
+<ellipse fill="none" stroke="black" cx="632.89" cy="-777.43" rx="56.17" ry="18"></ellipse> <text text-anchor="middle" x="632.89" y="-773.23" font-family="Times,serif" font-size="14.00">artist_name</text> </g> <!-- artist&#45;&#45;artist_name --> <g id="edge43" class="edge">
 <title>
 artist–artist_name
 </title>
-<path fill="none" stroke="black" d="M457.68,-296.49C448.85,-299.95 438.93,-303.83 429.59,-307.49"></path> </g> <!-- artist_ID --> <g id="node33" class="node">
+<path fill="none" stroke="black" d="M627.47,-599.08C628.61,-636.51 631.21,-721.95 632.34,-759.34"></path> </g> <!-- artist_ID --> <g id="node32" class="node">
 <title>
 artist_ID
 </title>
-<ellipse fill="none" stroke="black" cx="336.16" cy="-174.3" rx="45.23" ry="18"></ellipse> <text text-anchor="middle" x="336.16" y="-170.1" font-family="Times,serif" font-size="14.00">artist_ID</text> </g> <!-- artist&#45;&#45;artist_ID --> <g id="edge35" class="edge">
+<ellipse fill="none" stroke="black" cx="709.22" cy="-757.41" rx="45.23" ry="18"></ellipse> <text text-anchor="middle" x="709.22" y="-753.21" font-family="Times,serif" font-size="14.00">artist_ID</text> </g> <!-- artist&#45;&#45;artist_ID --> <g id="edge39" class="edge">
 <title>
 artist–artist_ID
 </title>
-<path fill="none" stroke="black" d="M460.84,-267.61C432.15,-246.14 384.86,-210.75 357.51,-190.28"></path> </g> <!-- is --> <g id="node36" class="node">
+<path fill="none" stroke="black" d="M635.42,-599.17C651.27,-633.16 685.17,-705.84 700.9,-739.55"></path> </g> <!-- is --> <g id="node37" class="node">
 <title>
 is
 </title>
-<polygon fill="lightgrey" stroke="lightgrey" points="342.25,-441.83 315.25,-423.83 342.25,-405.83 369.25,-423.83 342.25,-441.83"></polygon> <text text-anchor="middle" x="342.25" y="-419.63" font-family="Times,serif" font-size="14.00">is</text> </g> <!-- artist&#45;&#45;is --> <g id="edge5" class="edge">
+<polygon fill="lightgrey" stroke="lightgrey" points="433.57,-589.21 406.57,-571.21 433.57,-553.21 460.57,-571.21 433.57,-589.21"></polygon> <text text-anchor="middle" x="433.57" y="-567.01" font-family="Times,serif" font-size="14.00">is</text> </g> <!-- artist&#45;&#45;is --> <g id="edge5" class="edge">
 <title>
 artist–is
 </title>
-<path fill="none" stroke="black" d="M466.42,-303.82C436.32,-332.91 377.99,-389.29 353.5,-412.96"></path> <text text-anchor="middle" x="397.71" y="-362.59" font-family="Times,serif" font-size="14.00">0…1</text> </g> <!--  has --> <g id="node37" class="node">
+<path fill="none" stroke="black" d="M599.63,-579.58C562.16,-577.69 495.28,-574.32 458.88,-572.48"></path> <text text-anchor="middle" x="517.01" y="-580.23" font-family="Times,serif" font-size="14.00">0…1</text> </g> <!--  has --> <g id="node38" class="node">
 <title>
 has
 </title>
-<polygon fill="lightgrey" stroke="lightgrey" points="642.9,-231.81 605.44,-213.81 642.9,-195.81 680.36,-213.81 642.9,-231.81"></polygon> <text text-anchor="middle" x="642.9" y="-209.61" font-family="Times,serif" font-size="14.00"> has</text> </g> <!-- artist&#45;&#45; has --> <g id="edge7" class="edge">
+<polygon fill="lightgrey" stroke="lightgrey" points="796.37,-573.83 758.92,-555.83 796.37,-537.83 833.83,-555.83 796.37,-573.83"></polygon> <text text-anchor="middle" x="796.37" y="-551.63" font-family="Times,serif" font-size="14.00"> has</text> </g> <!-- artist&#45;&#45; has --> <g id="edge7" class="edge">
 <title>
 artist– has
 </title>
-<path fill="none" stroke="black" d="M512.22,-273.4C543.95,-258.93 595.66,-235.35 623.58,-222.62"></path> <text text-anchor="middle" x="564.4" y="-252.21" font-family="Times,serif" font-size="14.00">1</text> </g> <!--  &#160;has  --> <g id="node39" class="node">
+<path fill="none" stroke="black" d="M654.15,-576.92C685.21,-572.31 735.79,-564.81 767.51,-560.11"></path> <text text-anchor="middle" x="707.33" y="-572.71" font-family="Times,serif" font-size="14.00">1</text> </g> <!--  &#160;has  --> <g id="node40" class="node">
 <title>
  has
 </title>
-<polygon fill="lightgrey" stroke="lightgrey" points="589.96,-452.28 545.85,-434.28 589.96,-416.28 634.07,-434.28 589.96,-452.28"></polygon> <text text-anchor="middle" x="589.96" y="-430.08" font-family="Times,serif" font-size="14.00">  has </text> </g> <!-- artist&#45;&#45; &#160;has  --> <g id="edge11" class="edge">
+<polygon fill="lightgrey" stroke="lightgrey" points="629.71,-419.02 585.6,-401.02 629.71,-383.02 673.82,-401.02 629.71,-419.02"></polygon> <text text-anchor="middle" x="629.71" y="-396.82" font-family="Times,serif" font-size="14.00">  has </text> </g> <!-- artist&#45;&#45; &#160;has  --> <g id="edge11" class="edge">
 <title>
 artist–  has
 </title>
-<path fill="none" stroke="black" d="M497.95,-303.98C519.06,-333.88 560.64,-392.75 579.82,-419.92"></path> <text text-anchor="middle" x="528.39" y="-366.15" font-family="Times,serif" font-size="14.00">1..n</text> </g> <!-- has&#45;&#45;song --> <g id="edge2" class="edge">
+<path fill="none" stroke="black" d="M627.2,-562.71C627.74,-528.13 628.9,-453.45 629.43,-419.04"></path> <text text-anchor="middle" x="616.07" y="-495.07" font-family="Times,serif" font-size="14.00">1…n</text> </g> <!-- has&#45;&#45;song --> <g id="edge2" class="edge">
 <title>
 has–song
 </title>
-<path fill="none" stroke="black" d="M610.06,-673.8C634.31,-648.26 690.15,-589.47 718.49,-559.63"></path> <text text-anchor="middle" x="652.02" y="-620.92" font-family="Times,serif" font-size="14.00">1…n</text> </g> <!-- has &#45;&#45;user --> <g id="edge4" class="edge">
+<path fill="none" stroke="black" d="M522.04,-212.82C557.74,-216.81 619.02,-223.64 654.22,-227.56"></path> <text text-anchor="middle" x="575.88" y="-224.39" font-family="Times,serif" font-size="14.00">1…n</text> </g> <!-- has &#45;&#45;user --> <g id="edge4" class="edge">
 <title>
 has –user
 </title>
-<path fill="none" stroke="black" d="M313.68,-692.4C295.06,-664.83 253.27,-602.94 232.38,-572.01"></path> <text text-anchor="middle" x="269.53" y="-636.4" font-family="Times,serif" font-size="14.00">1</text> </g> <!-- is&#45;&#45;user --> <g id="edge6" class="edge">
+<path fill="none" stroke="black" d="M260.25,-391.38C258.25,-427.31 253.76,-508.19 251.74,-544.41"></path> <text text-anchor="middle" x="252.49" y="-472.1" font-family="Times,serif" font-size="14.00">1</text> </g> <!-- is&#45;&#45;user --> <g id="edge6" class="edge">
 <title>
 is–user
 </title>
-<path fill="none" stroke="black" d="M331.83,-434.9C310.81,-457.23 263.16,-507.84 237.37,-535.24"></path> <text text-anchor="middle" x="281.1" y="-489.27" font-family="Times,serif" font-size="14.00">1</text> </g> <!--  has&#45;&#45;album --> <g id="edge8" class="edge">
+<path fill="none" stroke="black" d="M408.15,-570C373.9,-568.38 313.2,-565.51 278.03,-563.85"></path> <text text-anchor="middle" x="339.59" y="-571.13" font-family="Times,serif" font-size="14.00">1</text> </g> <!--  has&#45;&#45;album --> <g id="edge8" class="edge">
 <title>
 has–album
 </title>
-<path fill="none" stroke="black" d="M679.56,-213.33C712.71,-212.9 760.76,-212.27 790.59,-211.88"></path> <text text-anchor="middle" x="722.82" y="-216.8" font-family="Times,serif" font-size="14.00">1…n</text> </g> <!--  has &#45;&#45;song --> <g id="edge10" class="edge">
+<path fill="none" stroke="black" d="M812.33,-545.4C837.17,-529.15 885.38,-497.62 915.75,-477.76"></path> <text text-anchor="middle" x="851.79" y="-515.78" font-family="Times,serif" font-size="14.00">1…n</text> </g> <!--  has &#45;&#45;song --> <g id="edge10" class="edge">
 <title>
 has –song
 </title>
-<path fill="none" stroke="black" d="M801.79,-399.25C788.28,-428.34 758.67,-492.04 744.1,-523.39"></path> <text text-anchor="middle" x="760.7" y="-465.52" font-family="Times,serif" font-size="14.00">1…n</text> </g> <!--  &#160;has &#45;&#45;song --> <g id="edge12" class="edge">
+<path fill="none" stroke="black" d="M818.73,-311.97C791.81,-296.04 740.01,-265.37 708.24,-246.57"></path> <text text-anchor="middle" x="751.23" y="-283.47" font-family="Times,serif" font-size="14.00">1…n</text> </g> <!--  &#160;has &#45;&#45;song --> <g id="edge12" class="edge">
 <title>
  has –song
 </title>
-<path fill="none" stroke="black" d="M605.83,-445.97C631.2,-464.64 681.09,-501.37 711.09,-523.46"></path> <text text-anchor="middle" x="646.21" y="-488.91" font-family="Times,serif" font-size="14.00">1…n</text> </g> </g>
+<path fill="none" stroke="black" d="M634.55,-384.98C644.17,-353.16 665.61,-282.22 675.73,-248.73"></path> <text text-anchor="middle" x="642.89" y="-321.06" font-family="Times,serif" font-size="14.00">1…n</text> </g> <!-- following&#45;&#45;user --> <g id="edge14" class="edge">
+<title>
+following–user
+</title>
+<path fill="none" stroke="black" d="M281.5,-683.48C278.61,-656.96 268.08,-607.68 259.66,-580.94"></path> <text text-anchor="middle" x="258.33" y="-619.61" font-family="Times,serif" font-size="14.00">0…n</text> </g> </g>
 </svg>
 </div>
 </div>
 </div>
 </div>
-</section>
 </section>
 <section id="crows-foot-diagram" class="level3">
 <h3 class="anchored" data-anchor-id="crows-foot-diagram">Crow’s Foot Diagram</h3>
@@ -3718,6 +3727,8 @@ has –song
         string user_name
         string password
         string account_type
+        int follower_count
+        int following_count
     }
 
     ARTIST {
@@ -3726,7 +3737,6 @@ has –song
         date birth_date
         string description
         date debut_date
-        int listener_count
     }
 
 
@@ -3736,17 +3746,61 @@ has –song
 </div>
 </div>
 </section>
+<section id="design-notes" class="level3">
+<h3 class="anchored" data-anchor-id="design-notes">Design Notes</h3>
+<p>One thought that we had was to possibly have an album be a more specific type of playlist (a playlist that only an artist can make). However, we also wanted ot include features that only playlists could have (i.e. discriptions). It also seemed unnecessary to connect albums and playlists, so we ultimately decided not to.</p>
+<p>We also had to consider which relationships to make many-to-many. Songs are often by multiple artist, so we made that relationship many-to-many. Though albums aren’t as often by multiple artist, we thought it would be the most consistent to also make that relationship many-to-many. Though songs can also be on multiple albums, they often show up as separate songs on music apps like Spotify, so we decided to keep that relationship as one-to-many.</p>
+<p>[Add other trade-offs]</p>
+</section>
 </section>
 <section id="relational-schemas" class="level1">
 <h1>Relational Schemas</h1>
-<p>user (ID [PK], user_name, password, account_type)</p>
-<p>artist (ID [PK], name, birth_date, description, debut_date, listener_count)</p>
-<p>song (ID [PK], name, tempo, key, plays, duration, artist_ID [FK], album_ID [FK])</p>
-<p>album (ID [PK], name, record_label, genre, release_date, classification, duraion, artist_ID[FK])</p>
-<p>playlist (ID [PK], name, description, duration, song_number, user_ID[FK])</p>
+<p>user (ID [PK], user_name [NOT_NULL, UNIQUE], password [NOT_NULL], account_type [(free, premium, artist)])</p>
+<p>artist (ID [PK], name [NOT_NULL], birth_date [NOT_NULL], description, debut_date [NOT_NULL])</p>
+<p>song (ID [PK], name [NOT_NULL], tempo, key, plays [NOT_NULL], duration [NOT_NULL], artist_ID [FK], album_ID [FK])</p>
+<p>album (ID [PK], name [NOT_NULL], record_label [NOT_NULL], genre, release_date [NOT_NULL], classification [NOT_NULL], duration [NOT_NULL], artist_ID[FK])</p>
+<p>playlist (ID [PK], name [NOT_NULL], description, duration [NOT_NULL], song_number [NOT_NULL], user_ID[FK])</p>
 <p>artist_song (ID [PK], artist_ID[FK], song_ID[FK])</p>
+<pre><code>    FK(artist_ID) references artist.ID
+
+    FK(song_ID) references song.ID</code></pre>
 <p>artist_album (ID [PK], artist_ID[FK], album_ID[FK])</p>
+<pre><code>    FK(artist_ID) references artist.ID
+
+    FK(album_ID) references album.ID</code></pre>
 <p>playlist_song (ID [PK], playlist_ID[FK], song_ID[FK])</p>
+<pre><code>    FK(playlist_ID) references playlist.ID
+
+    FK(song_ID) references song.ID</code></pre>
+<p>following (ID [PK], follower_ID[FK], following_ID[FK])</p>
+<pre><code>    FK(follower_ID) references user.ID
+
+    FK(following_ID) references user.ID</code></pre>
+</section>
+<section id="functional-dependencies" class="level1">
+<h1>Functional Dependencies</h1>
+<p>user (ID, user_name, password, account_type)</p>
+<pre><code>    ID -&gt; user_name, password, account_type</code></pre>
+<p>artist (ID, name, birth_date, description, debut_date)</p>
+<pre><code>    ID -&gt; name, birth_date, description, debut_date</code></pre>
+<p>song (ID, name, tempo, key, plays, duration, artist_ID, album_ID)</p>
+<pre><code>    ID -&gt; name, tempo, key, plays, duration, artist_ID, album_ID</code></pre>
+<p>album (ID, name, record_label, genre, release_date, classification, duration, artist_ID)</p>
+<pre><code>    ID -&gt; name, record_label, genre, release_date, classification, duration, artist_ID</code></pre>
+<p>playlist (ID, name, description, duration, song_number, user_ID)</p>
+<pre><code>    ID -&gt; name, description, duration, song_number, user_ID</code></pre>
+<p>artist_song (ID, artist_ID, song_ID)</p>
+<pre><code>    ID -&gt; artist_ID, song_ID</code></pre>
+<p>artist_album (ID, artist_ID, album_ID)</p>
+<pre><code>    ID -&gt; artist_ID, album_ID</code></pre>
+<p>playlist_song (ID, playlist_ID, song_ID)</p>
+<pre><code>    ID -&gt; playlist_ID, song_ID</code></pre>
+<p>following (ID, follower_ID, following_ID)</p>
+<pre><code>    ID -&gt; follower_ID, following_ID</code></pre>
+<section id="normalization-notes" class="level4">
+<h4 class="anchored" data-anchor-id="normalization-notes">Normalization Notes</h4>
+<p>Our relations are already in BCNF, as each relation consist of 1 functional dependency, where the candidate key determines everything else in the relation.</p>
+</section>
 </section>
 
 </main>
