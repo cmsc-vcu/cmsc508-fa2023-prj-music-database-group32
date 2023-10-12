@@ -3287,6 +3287,7 @@ z-index: 1000;
   </ul></li>
   <li><a href="#relational-schemas" id="toc-relational-schemas" class="nav-link" data-scroll-target="#relational-schemas">Relational Schemas</a></li>
   <li><a href="#functional-dependencies" id="toc-functional-dependencies" class="nav-link" data-scroll-target="#functional-dependencies">Functional Dependencies</a></li>
+  <li><a href="#sample-data" id="toc-sample-data" class="nav-link" data-scroll-target="#sample-data">Sample Data</a></li>
   </ul>
 </nav>
 </div>
@@ -3800,6 +3801,796 @@ following–user
 <section id="normalization-notes" class="level4">
 <h4 class="anchored" data-anchor-id="normalization-notes">Normalization Notes</h4>
 <p>Our relations are already in BCNF, as each relation consist of 1 functional dependency, where the candidate key determines everything else in the relation.</p>
+</section>
+</section>
+<section id="sample-data" class="level1">
+<h1>Sample Data</h1>
+<section id="user-id-user_name-password-account_type" class="level4">
+<h4 class="anchored" data-anchor-id="user-id-user_name-password-account_type">user (ID, user_name, password, account_type)</h4>
+<table class="table">
+<thead>
+<tr class="header">
+<th>user_ID</th>
+<th>username</th>
+<th>password</th>
+<th>account_type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>user1</td>
+<td>pass1</td>
+<td>free</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>user2</td>
+<td>pass2</td>
+<td>premium</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>artist1</td>
+<td>pass3</td>
+<td>artist</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>user3</td>
+<td>pass4</td>
+<td>free</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>user4</td>
+<td>pass5</td>
+<td>premium</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>artist2</td>
+<td>pass6</td>
+<td>artist</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>user5</td>
+<td>pass7</td>
+<td>free</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>user6</td>
+<td>pass8</td>
+<td>premium</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>artist3</td>
+<td>pass9</td>
+<td>artist</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>user7</td>
+<td>pass10</td>
+<td>free</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="artist-id-name-birth_date-description-debut_date" class="level4">
+<h4 class="anchored" data-anchor-id="artist-id-name-birth_date-description-debut_date">artist (ID, name, birth_date, description, debut_date)</h4>
+<table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 18%">
+<col style="width: 19%">
+<col style="width: 34%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Name</th>
+<th>Birth Date</th>
+<th>Description</th>
+<th>Debut Date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3</td>
+<td>Artist Name 1</td>
+<td>1990-04-15</td>
+<td>Description 1</td>
+<td>2010-08-20</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Artist Name 2</td>
+<td>1985-11-30</td>
+<td>Description 2</td>
+<td>2005-06-12</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Artist Name 3</td>
+<td>1995-07-25</td>
+<td>Description 3</td>
+<td>2012-03-05</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td>Artist Name 4</td>
+<td>1982-02-10</td>
+<td>Description 4</td>
+<td>2000-09-18</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>Artist Name 1</td>
+<td>1988-09-05</td>
+<td>Description 5</td>
+<td>2008-12-24</td>
+</tr>
+<tr class="even">
+<td>15</td>
+<td>Artist Name 5</td>
+<td>1990-07-25</td>
+<td>NULL</td>
+<td>2011-06-05</td>
+</tr>
+<tr class="odd">
+<td>16</td>
+<td>Artist Name 6</td>
+<td>1985-11-30</td>
+<td>Description 6</td>
+<td>2007-10-02</td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td>Artist Name 7</td>
+<td>1990-01-14</td>
+<td>Description 7</td>
+<td>2015-03-09</td>
+</tr>
+<tr class="odd">
+<td>21</td>
+<td>Artist Name 8</td>
+<td>1970-08-20</td>
+<td>Description 1</td>
+<td>2020-09-25</td>
+</tr>
+<tr class="even">
+<td>22</td>
+<td>Artist Name 9</td>
+<td>1989-09-18</td>
+<td>Description 8</td>
+<td>2008-06-24</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="song-id-name-tempo-key-plays-duration-artist_id-album_id" class="level4">
+<h4 class="anchored" data-anchor-id="song-id-name-tempo-key-plays-duration-artist_id-album_id">song (ID, name, tempo, key, plays, duration, artist_ID, album_ID)</h4>
+<table class="table">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 21%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 13%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Name</th>
+<th>Tempo</th>
+<th>Key</th>
+<th>Plays</th>
+<th>Duration</th>
+<th>Artist ID</th>
+<th>Album ID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Song Name 1</td>
+<td>120</td>
+<td>C#</td>
+<td>2500</td>
+<td>3:45</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Song Name 2</td>
+<td>NULL</td>
+<td>G</td>
+<td>3200</td>
+<td>4:10</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Song Name 3</td>
+<td>110</td>
+<td>D</td>
+<td>1800</td>
+<td>3:20</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Song Name 4</td>
+<td>75</td>
+<td>A</td>
+<td>3100</td>
+<td>4:55</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Song Name 5</td>
+<td>130</td>
+<td>E</td>
+<td>2800</td>
+<td>3:30</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Song Name 6</td>
+<td>100</td>
+<td>D</td>
+<td>30000</td>
+<td>3:10</td>
+<td>5</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Song Name 6</td>
+<td>100</td>
+<td>D</td>
+<td>30000</td>
+<td>3:10</td>
+<td>5</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Song Name 3</td>
+<td>90</td>
+<td>NULL</td>
+<td>2200</td>
+<td>3:40</td>
+<td>6</td>
+<td>8</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Song Name 7</td>
+<td>80</td>
+<td>A#</td>
+<td>3100</td>
+<td>2:14</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Song Name 8</td>
+<td>125</td>
+<td>E</td>
+<td>2800</td>
+<td>3:01</td>
+<td>7</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="album-id-name-record_label-genre-release_date-classification-duration-artist_id" class="level4">
+<h4 class="anchored" data-anchor-id="album-id-name-record_label-genre-release_date-classification-duration-artist_id">album (ID, name, record_label, genre, release_date, classification, duration, artist_ID)</h4>
+<table class="table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 15%">
+<col style="width: 13%">
+<col style="width: 12%">
+<col style="width: 13%">
+<col style="width: 15%">
+<col style="width: 9%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Name</th>
+<th>Record Label</th>
+<th>Genre</th>
+<th>Release Date</th>
+<th>Classification</th>
+<th>Duration</th>
+<th>Artist ID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Album Name 1</td>
+<td>Label 1</td>
+<td>Rock</td>
+<td>2023-01-15</td>
+<td>EP</td>
+<td>45:30</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Album Name 2</td>
+<td>Label 2</td>
+<td>Pop</td>
+<td>2022-05-20</td>
+<td>Album</td>
+<td>37:45</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Album Name 3</td>
+<td>Label 3</td>
+<td>Hip-Hop</td>
+<td>2021-11-10</td>
+<td>Single</td>
+<td>52:15</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Album Name 4</td>
+<td>Label 4</td>
+<td>Jazz</td>
+<td>2023-03-02</td>
+<td>Collection</td>
+<td>61:10</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Album Name 5</td>
+<td>Label 5</td>
+<td>Electronic</td>
+<td>2022-08-17</td>
+<td>Album</td>
+<td>49:20</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Album Name 1</td>
+<td>Label 1</td>
+<td>Rock</td>
+<td>2023-01-15</td>
+<td>EP</td>
+<td>45:30</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Album Name 6</td>
+<td>Label 1</td>
+<td>NULL</td>
+<td>2022-05-20</td>
+<td>Album</td>
+<td>37:45</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Album Name 7</td>
+<td>Label 6</td>
+<td>Classical</td>
+<td>2021-11-10</td>
+<td>Single</td>
+<td>3:15</td>
+<td>7</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Album Name 8</td>
+<td>Label 7</td>
+<td>Jazz</td>
+<td>2023-03-02</td>
+<td>Collection</td>
+<td>61:10</td>
+<td>8</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Album Name 9</td>
+<td>Label 8</td>
+<td>R&amp;B</td>
+<td>2022-08-17</td>
+<td>Album</td>
+<td>49:20</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="playlist-id-name-description-duration-song_number-user_id" class="level4">
+<h4 class="anchored" data-anchor-id="playlist-id-name-description-duration-song_number-user_id">playlist (ID, name, description, duration, song_number, user_ID)</h4>
+<table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 21%">
+<col style="width: 27%">
+<col style="width: 13%">
+<col style="width: 16%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Name</th>
+<th>Description</th>
+<th>Duration</th>
+<th>Song Number</th>
+<th>User ID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Playlist Name 1</td>
+<td>Description 1</td>
+<td>2:30:15</td>
+<td>20</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Playlist Name 2</td>
+<td>Description 2</td>
+<td>1:45:40</td>
+<td>15</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Playlist Name 3</td>
+<td>Description 3</td>
+<td>3:10:22</td>
+<td>30</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Playlist Name 4</td>
+<td>Description 4</td>
+<td>1:15:50</td>
+<td>12</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Playlist Name 5</td>
+<td>Description 5</td>
+<td>4:05:30</td>
+<td>40</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Playlist Name 5</td>
+<td>NULL</td>
+<td>2:30:15</td>
+<td>20</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Playlist Name 6</td>
+<td>Description 6</td>
+<td>0:3:40</td>
+<td>1</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Playlist Name 7</td>
+<td>Description 3</td>
+<td>3:53:22</td>
+<td>25</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Playlist Name 8</td>
+<td>Description 7</td>
+<td>1:06:50</td>
+<td>10</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Playlist Name 9</td>
+<td>Description 8</td>
+<td>5:05:30</td>
+<td>51</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="artist_song-id-artist_id-song_id" class="level4">
+<h4 class="anchored" data-anchor-id="artist_song-id-artist_id-song_id">artist_song (ID, artist_ID, song_ID)</h4>
+<table class="table">
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Artist ID</th>
+<th>Song ID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>2</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>3</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>4</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>4</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="artist_album-id-artist_id-album_id" class="level4">
+<h4 class="anchored" data-anchor-id="artist_album-id-artist_id-album_id">artist_album (ID, artist_ID, album_ID)</h4>
+<table class="table">
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Artist ID</th>
+<th>Album ID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>2</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>3</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>4</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>4</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="playlist_song-id-playlist_id-song_id" class="level4">
+<h4 class="anchored" data-anchor-id="playlist_song-id-playlist_id-song_id">playlist_song (ID, playlist_ID, song_ID)</h4>
+<table class="table">
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Playlist ID</th>
+<th>Song ID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>2</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>2</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>4</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>4</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="following-id-follower_id-following_id" class="level4">
+<h4 class="anchored" data-anchor-id="following-id-follower_id-following_id">following (ID, follower_ID, following_ID)</h4>
+<table class="table">
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Follower ID</th>
+<th>Following ID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>1</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>2</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>2</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>4</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 
