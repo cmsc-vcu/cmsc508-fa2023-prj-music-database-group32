@@ -227,6 +227,36 @@ following (ID, follower_ID, following_ID)
 
 Our relations are already in BCNF, as each relation consist of 1 functional dependency, where the candidate key determines everything else in the relation.
 
+# Queries
+
+1. What are all songs in the key of C with the tempo of 120 bpm?
+        $\pi_{name}(\sigma_{(key = C) ∧ (tempo = 120)}(song))$
+
+2. What songs on user music_lover's "favorites" playlist were released this year?
+        $\pi_{name}(\sigma_{release\_date.year}(album)(song \bowtie_{song.ID = playlist.song\_ID} (playlist\_song \bowtie (\sigma_{name = favorites}(playlist) \bowtie_{playlist.user\_ID = user.ID} \sigma_{name = music\_lover}(user)))))$
+
+3. How many of user john_smith's followers do they follow back?
+        $\pi COUNT(*) (\sigma_{user.name = john\_smith} (user \bowtie_{following.following\_ID = user.ID} (following \bowtie_{following.follower\_ID = follower.following\_ID} (\rho_{follower} (\pi_{following.follower\_ID}(\sigma_{user.name = john\_smith}(user \bowtie_{user.ID = following.follower\_ID} following)))))))$
+
+4. What percentage of non-artist users have a premium account?
+        $((\pi COUNT(*)(\sigma_{account\_type = premium}(user)))/(\pi COUNT(*)(\sigma_{ㄱ(account\_type = artist)}(user)))) * 100$
+
+5. How many artists have released music under the "Universal Music" record label?
+        $\pi COUNT(*) (\sigma_{record\_label = Universal Music}(artist \bowtie_{artist.ID = album.artist\_ID} album))$
+
+6. What is Beyonce's least popular song?
+        $\pi MIN(plays) (\sigma_{artist.name = Beyonce}(song \bowtie_{song.artistID = artist.ID} artist))$
+
+7. What's the longest jazz song?
+        $\pi MAX(song.duration) (\sigma_{genre = jazz}(song \bowtie_{song.albumID = album.ID} album))$
+
+8. How many songs feature Nicki Minaj?
+        $\pi COUNT(*) (\sigma_{artist.name = Nicki Minaj}(artist \bowtie_{artist.ID = artist\_song.artist\_ID} artist\_song)) - \pi COUNT(*) (\sigma_{artist.name = Nicki Minaj}(song \bowtie_{song.artist\_ID = artist.ID} artist))$
+
+[Javeria's queries]
+
+[Feyza's queries]
+
 # Sample Data
 
 #### user (ID, user_name, password, account_type)
@@ -242,7 +272,7 @@ Our relations are already in BCNF, as each relation consist of 1 functional depe
 | 7 | user5 | pass7 | free |
 | 8 | user6 | pass8 | premium |
 | 9 | artist3 | pass9 | artist |
-| 10 | user7 | pass10 | free |
+| 10 | user7 | pass1 | free |
 
 #### artist (ID, name, birth_date, description, debut_date)
 
@@ -263,16 +293,16 @@ Our relations are already in BCNF, as each relation consist of 1 functional depe
 
 |   ID   |       Name       | Tempo  |   Key   |  Plays  | Duration | Artist ID | Album ID |
 |-------|------------------|--------|---------|---------|----------|-----------|----------|
-|   1   |  Song Name 1     |  120   |   C#    |  2500   |  3:45    |    1    |    1     |
-|   2   |  Song Name 2     |  NULL    |   G     |  3200   |  4:10    |    2    |    2     |
-|   3   |  Song Name 3     |  110   |   D     |  1800   |  3:20    |    2    |    3     |
-|   4   |  Song Name 4     |  75    |   A     |  3100   |  4:55    |    3    |    4     |
-|   5   |  Song Name 5     |  130   |   E     |  2800   |  3:30    |    4    |    5     |
-|   6   |  Song Name 6     |  100   |   D    |  30000   |  3:10    |    5    |    6     |
-|   7   |  Song Name 6     |  100    |   D     |  30000   |  3:10    |    5    |    7     |
-|   8   |  Song Name 3     |  90   |   NULL     |  2200   |  3:40    |    6    |    8     |
-|   9   |  Song Name 7     |  80    |   A#     |  3100   |  2:14    |    1    |    1     |
-|   10   |  Song Name 8     |  125   |   E     |  2800   |  3:01    |    7    |    9     |
+|   1   |  Song Name 1     |  120   |   C#    |  2500   |  03:45    |    1    |    1     |
+|   2   |  Song Name 2     |  NULL    |   G     |  3200   |  04:10    |    2    |    2     |
+|   3   |  Song Name 3     |  110   |   D     |  1800   |  03:20    |    2    |    3     |
+|   4   |  Song Name 4     |  75    |   A     |  3100   |  04:55    |    3    |    4     |
+|   5   |  Song Name 5     |  130   |   E     |  2800   |  03:30    |    4    |    5     |
+|   6   |  Song Name 6     |  100   |   D    |  30000   |  03:10    |    5    |    6     |
+|   7   |  Song Name 6     |  100    |   D     |  30000   |  03:10    |    5    |    7     |
+|   8   |  Song Name 3     |  90   |   NULL     |  2200   |  03:40    |    6    |    8     |
+|   9   |  Song Name 7     |  80    |   A#     |  3100   |  02:14    |    1    |    1     |
+|   10   |  Song Name 8     |  125   |   E     |  2800   |  03:01    |    7    |    9     |
 
 #### album (ID, name, record_label, genre, release_date, classification, duration, artist_ID)
 
@@ -285,7 +315,7 @@ Our relations are already in BCNF, as each relation consist of 1 functional depe
 |   5   |  Album Name 5  | Label 5      | Electronic  | 2022-08-17   | Album       | 49:20    |    5    |
 |   6   |  Album Name 1  | Label 1      | Rock        | 2023-01-15   | EP           | 45:30    |    1    |
 |   7   |  Album Name 6  | Label 1      | NULL         | 2022-05-20   | Album       | 37:45    |    6    |
-|   8   |  Album Name 7  | Label 6      | Classical     | 2021-11-10   | Single         | 3:15    |    7    |
+|   8   |  Album Name 7  | Label 6      | Classical     | 2021-11-10   | Single         | 03:15    |    7    |
 |   9   |  Album Name 8  | Label 7      | Jazz        | 2023-03-02   | Collection           | 61:10    |    8    |
 |   10   |  Album Name 9  | Label 8      | R&B  | 2022-08-17   | Album       | 49:20    |    5    |
 
