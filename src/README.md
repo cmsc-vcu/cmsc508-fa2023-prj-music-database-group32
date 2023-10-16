@@ -27,3 +27,14 @@ In the queries, 20 queries are listed using the relational algebra. According to
 In the sample data, tables for each relation are put with sample values. The tables’ names are user, artist, song, album, playlist, artist_song, artist_album, playlist_song, and following. 
 
 To render the Deliverable4.qmd file into Deliverable4.html file, “quarto render Deliverable4.qmd --to html” is used.
+
+# Videos
+
+[Video 1](https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+3+-+Version+2/1_thnnkrtm): Original video from project deliverable 3
+
+[Video 2](https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+4/1_xyo18fcy): Video from project deliverable 4
+
+# HTML document
+
+[HTML document](https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32/blob/main/reports/Deliverable4.html)
+ 
