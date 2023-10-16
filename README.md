@@ -22,7 +22,7 @@ A functional dependency is when an attribute or attributes are dependent on anot
 
 In the Normalization Notes, how the relations are in BCNF/4NF form is discussed.
 
-In the queries, 20 queries are listed using the relational algebra. According to relational algebra, sigma (σ) is used for picking rows, pi (𝜋) is for picking columns, join (bowtie ⋈) is for connecting two tables, “COUNT(*)” is for counting, “MIN(value)” is for finding the minimum, and “MAX(value)” is for finding the maximum. When we use pi and/or sigma, we need to specify the entity (table) like this "$\sigma_{picked\_row}(table\_name)$" or "$\pi_{picked\_column}(table\_name)$". When we use joins, we need to set the same keys to each other like this “$\bowtie_{ALBUM.user\_ID = USER.ID}$” where both ALBUM and USER entities are comparing their user IDs.
+In the queries, 20 queries are listed using the relational algebra. According to relational algebra, sigma (σ) is used for picking rows, pi (𝜋) is for picking columns, join (bowtie ⋈) is for connecting two tables, “COUNT(*)” is for counting, “MIN(value)” is for finding the minimum, and “MAX(value)” is for finding the maximum. When we use pi and/or sigma, we need to specify the entity (table) like this “ σ_row = value (table name) “ or “ 𝜋_column(table name) “. When we use joins, we need to set the same keys to each other like this “ ⋈ ALBUM.user_ID = USER.ID ” where both ALBUM and USER entities are comparing their user IDs.
 
 In the sample data, tables for each relation are put with sample values. The tables’ names are user, artist, song, album, playlist, artist_song, artist_album, playlist_song, and following. 
 
