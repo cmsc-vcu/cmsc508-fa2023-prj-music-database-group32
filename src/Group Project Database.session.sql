@@ -13,7 +13,7 @@ CREATE TABLE user (
     ID INT AUTO_INCREMENT,
     user_name VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    account_type VARCHAR(255) NOT NULL CHECK (account_type = "free" OR account_type = "premium" OR account_type = "artist"),
+    account_type VARCHAR(255) NOT NULL CHECK (account_type IN ("free", "premium", "artist")),
     PRIMARY KEY(ID)
 );
 
@@ -34,7 +34,7 @@ CREATE TABLE album (
     record_label VARCHAR(255) NOT NULL,
     genre VARCHAR(255),
     release_date date DEFAULT (CURRENT_DATE),
-    classification VARCHAR(255) NOT NULL CHECK (classification = "album" OR classification = "single" OR classification = "EP" OR classification = "Compilation"),
+    classification VARCHAR(255) NOT NULL CHECK (classification IN ("album", "single", "EP", "compilation")),
     duration TIME NOT NULL,
     artist_ID INT NOT NULL,
     PRIMARY KEY(ID),
@@ -48,7 +48,7 @@ CREATE TABLE song (
     ID INT AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     tempo INT CHECK (tempo >= 20 AND tempo <= 200),
-    song_key VARCHAR(255) CHECK (song_key = "A" OR song_key = "A#" OR song_key = "Bb" OR song_key = "B" OR song_key = "C" OR song_key = "C#" OR song_key - "Db" OR song_key = "D" OR song_key = "D#" OR song_key = "Eb" OR song_key = "E" OR song_key = "F" OR song_key = "F#" OR song_key = "Gb" OR song_key = "G" OR song_key = "G#" OR song_key = "Ab"),
+    song_key VARCHAR(255) CHECK (song_key IN ("A", "A#", "Bb", "B", "C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#", "Ab", "Am", "A#m", "Bbm", "Bm", "Cm", "C#m", "Dbm", "Dm", "D#m", "Ebm", "Em", "Fm", "F#m", "Gbm", "Gm", "G#m", "Abm")),
     plays INT DEFAULT 0 CHECK (plays >= 0),
     duration TIME NOT NULL CHECK (duration > 0.00),
     artist_ID INT NOT NULL,
