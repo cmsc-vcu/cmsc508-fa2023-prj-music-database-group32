@@ -66,12 +66,18 @@ CREATE TABLE song (
         ON DELETE CASCADE
 );
 
+/*
+    Ask before submission:
+    
+    1 - duration TIME NOT NULL CHECK (duration > 0.00),
+    
+*/
 DROP TABLE IF EXISTS playlist;
 CREATE TABLE playlist (
     ID INT AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255),
-    duration TIME NOT NULL CHECK (duration > 0.00),
+    duration TIME NOT NULL,
     user_ID INT NOT NULL,
     PRIMARY KEY(ID),
     FOREIGN KEY(user_ID)
@@ -761,6 +767,22 @@ select song.ID,song.name,artist.ID, artist.name from song INNER JOIN artist ON s
 
 select * from song where artist_id = 3;
 
+/* Every time we add a new song to the playlist, increase the playlist's duration as much as the song's duration*/
+    /* 1 - Trigger is named "new_song_for_playlist" */
+CREATE TRIGGER new_song_for_playlist
+    /* 2 - Use the trigger after there's an insert to the "playlist_song" */
+AFTER INSERT ON playlist_song FOR EACH ROW
+    /* 3 - Since we've multiple SQL statements (e.g. "SELECT" and "UPDATE"), we need to have "BEGIN" and "END" */
+BEGIN
+        /* 4 - Create a new duration value "added_song_duration" to save the added song's duration*/
+    DECLARE added_song_duration TIME;
+        /* 5 - Get the added song's duration from the "song" table with its ID */
+        /* 6 - To "added_song_duration," add added song's duration by using "INTO"*/
+    SELECT song.duration INTO added_song_duration FROM song WHERE song.ID = NEW.song_ID;
+        /* - Increase "playlist"'s duration by the added song's duration */
+    UPDATE playlist SET duration = ADDTIME(duration, added_song_duration) WHERE ID = NEW.playlist_ID;
+END;
+
 INSERT INTO artist_song (artist_ID, song_ID) VALUES
 (1, 1),
 (1, 2),
@@ -1117,3 +1139,145 @@ INSERT INTO artist_album (artist_ID, album_ID) VALUES
 (6,35),
 (4,35),
 (5,35);
+
+/* Adds playlists with given name, desc, duration, and user_ID randomly picked */
+INSERT INTO playlist (name, description, duration, user_ID) VALUES
+    ('1989 Melodies', 'Handpicked tunes from Taylor Swift\'s 1989 album', '0:00', 1),
+    ('÷ (Divide) Selections', 'Diverse tracks from Ed Sheeran\'s ÷ (Divide)', '0:00', 2),
+    ('Adele 25 Favorites', 'Your go-to playlist for Adele\'s 25 album hits', '0:00', 3),
+    ('Beyoncé Love Jams', 'Romantic tunes from Beyoncé\'s Dangerously In Love', '0:00', 4),
+    ('Drake Views Vibes', 'Immerse in the soundscape of Drake\'s Views album', '0:00', 5),
+    ('Ariana Grande Hits', 'A collection of Ariana Grande\'s Thank U, Next favorites', '0:00', 6),
+    ('Bieber Fever Mix', 'Essential tracks from Justin Bieber\'s My World 2.0', '0:00', 7),
+    ('Eilish Wonderland', 'Step into the enchanting world of Billie Eilish', '0:00', 8),
+    ('Kanye West Graduation Party', 'Celebrate with hits from Kanye West\'s Graduation', '0:00', 9),
+    ('Rihanna Good Girl Playlist', 'The best of Rihanna from Good Girl Gone Bad', '0:00', 10),
+    ('Mendes Handwritten Picks', 'Top choices from Shawn Mendes\' Handwritten album', '0:00', 11),
+    ('Eminem Showtime', 'Eminem\'s greatest hits from The Eminem Show', '0:00', 12),
+    ('Lady Gaga Fame Faves', 'Favorites from Lady Gaga\'s The Fame', '0:00', 13),
+    ('Dua Lipa Mixtape', 'Dua Lipa\'s hottest tracks in one playlist', '0:00', 14),
+    ('Mars 24K Magic Moments', 'Best moments from Bruno Mars\' 24K Magic', '0:00', 15),
+    ('Perry Dreamy Tunes', 'Dreamy tracks from Katy Perry\'s Teenage Dream', '0:00', 16),
+    ('Weeknd Starboy Selections', 'Starboy vibes from The Weeknd', '0:00', 17),
+    ('Minaj Pink Friday Party', 'Party with Nicki Minaj\'s Pink Friday hits', '0:00', 18),
+    ('Swift Lover Mix', 'Eclectic mix inspired by Taylor Swift\'s Lover', '0:00', 19),
+    ('Sheeran Acoustic Journey', 'Relax with acoustic tunes by Ed Sheeran', '0:00', 20),
+    ('Adele Soulful Session', 'Soulful moments with Adele\'s powerful voice', '0:00', 21),
+    ('Queen Beyoncé Anthems', 'Anthems from the queen herself, Beyoncé', '0:00', 22),
+    ('Drake Chill Zone', 'Chill vibes with Drake\'s smooth sounds', '0:00', 23),
+    ('Ariana Grande Mood', 'Set your mood with Ariana Grande\'s hits', '0:00', 24),
+    ('Bieber Unplugged', 'Unplugged and acoustic moments with Justin Bieber', '0:00', 25),
+    ('Eilish Ocean Waves', 'Oceanic vibes inspired by Billie Eilish', '0:00', 1),
+    ('Kanye West Graduation Celebration', 'Celebrate the achievements with Kanye West', '0:00', 2),
+    ('Rihanna Island Rhythms', 'Feel the island vibes with Rihanna', '0:00', 3),
+    ('Shawn Mendes Acoustic Serenade', 'Serenade your senses with Shawn Mendes', '0:00', 4),
+    ('Eminem Rap God Anthems', 'Anthems from the Rap God, Eminem', '0:00', 5),
+    ('Lady Gaga Electrifying Hits', 'Electrifying hits from Lady Gaga', '0:00', 6),
+    ('Dua Lipa Dance Party', 'Get ready for a dance party with Dua Lipa', '0:00', 7),
+    ('Bruno Mars Funky Grooves', 'Groove to the funky beats of Bruno Mars', '0:00', 8),
+    ('Katy Perry Dreamy Wonderland', 'Enter a dreamy wonderland with Katy Perry', '0:00', 9),
+    ('The Weeknd Starboy Journey', 'Embark on a journey with The Weeknd\'s Starboy', '0:00', 10),
+    ('Nicki Minaj Pink Friday Extravaganza', 'Experience an extravaganza with Nicki Minaj', '0:00', 11),
+    ('Taylor Swift Lover\'s Playlist', 'A playlist for the lovers inspired by Taylor Swift', '0:00', 12),
+    ('Ed Sheeran Cozy Acoustics', 'Cozy up with acoustic tunes by Ed Sheeran', '0:00', 13),
+    ('Adele Soulful Moments', 'Soulful moments with Adele\'s captivating voice', '0:00', 14),
+    ('Beyoncé Empowerment Anthems', 'Empower yourself with anthems from Beyoncé', '0:00', 15),
+    ('Drake Chill Zone Vol. 2', 'Continue the chill vibes with Drake\'s smooth sounds', '0:00', 16),
+    ('Ariana Grande Mood Boost', 'Boost your mood with Ariana Grande\'s hits', '0:00', 17),
+    ('Justin Bieber Unplugged Sessions', 'Unplugged sessions with Justin Bieber', '0:00', 18),
+    ('Mindful Study Beats', 'Elevate your focus with mindful study beats', '0:00', 1),
+    ('Cerebral Soundscapes', 'Dive into cerebral soundscapes for productive study', '0:00', 2),
+    ('Academic Groove Fusion', 'Fusing academic groove for a study session', '0:00', 3),
+    ('Zen Study Lounge', 'Create your study oasis with Zen Study Lounge', '0:00', 4),
+    ('Brainwave Symphony', 'Harmonize your brainwaves with a symphony of study tunes', '0:00', 5),
+    ('Neural Notes Nexus', 'Connect with the Neural Notes Nexus for focused studying', '0:00', 6),
+    ('Epic Study Odyssey', 'Embark on an epic study odyssey with this playlist', '0:00', 7)
+;
+
+/* Adds songs to playlists with given playlist_ID and song_ID while increasing the "playlist" table's duration values / randomly picked */
+INSERT INTO playlist_song (playlist_ID, song_ID) VALUES
+    (1, 1),(1, 2),(1, 3),
+    (2, 4),(2, 5),
+    (3, 6),(3, 7),(3, 8),
+    (4, 9),(4, 10),
+    (5, 11), (5, 12),
+    (6, 13), (6, 14),
+    (7, 15), (7, 16),
+    (8, 17), (8, 18), (8, 19),
+    (9, 20), (9, 21), (9, 22),
+    (10, 23),(10, 24), (10, 25),
+    (11, 1), (11, 2), (11, 3),
+    (12, 4), (12, 5),
+    (13, 6), (13, 7), (13, 8),
+    (14, 9), (14, 10),
+    (15, 11), (15, 12),
+    (16, 13), (16, 14),
+    (17, 15), (17, 16),
+    (18, 17),(18, 18), (18, 19),
+    (19, 20),(19, 21),(19, 22),
+    (20, 23),(20, 24),(20, 25),
+    (21, 1),(21, 2),(21, 3),
+    (22, 4),(22, 5),
+    (23, 6),(23, 7),(23, 8),
+    (24, 9),(24, 10),
+    (25, 11),(25, 12),
+    (26, 13),(26, 14),
+    (27, 15),(27, 16),
+    (28, 17),(28, 18),(28, 19),
+    (29, 20),(29, 21),(29, 22),
+    (30, 23),(30, 24),(30, 25),
+    (31, 1),(31, 2),(31, 3),
+    (32, 4),(32, 5),
+    (33, 6),(33, 7),(33, 8),
+    (34, 9),(34, 10),
+    (35, 11),(35, 12),
+    (36, 13),(36, 14),
+    (37, 15),(37, 16),
+    (38, 17),(38, 18),(38, 19),
+    (39, 20),(39, 21),(39, 22),
+    (40, 23),(40, 24),(40, 25),
+    (41, 1),(41, 2),(41, 3),
+    (42, 4),(42, 5),
+    (43, 6),(43, 7),(43, 8),
+    (44, 9),(44, 10),
+    (45, 11),(45, 12),
+    (46, 13),(46, 14),
+    (47, 15),(47, 16),
+    (48, 17),(48, 18),(48, 19),
+    (49, 20),(49, 21),(49, 22),
+    (50, 23),(50, 24),(50, 25)
+;
+
+/* Adds followers (follower_ID) to users (following_ID) randomly picked*/
+INSERT INTO following (follower_ID, following_ID) VALUES
+    (1, 2), (1, 3), (1, 4),
+    (2, 3), (2, 4), (2, 5),
+    (3, 4), (3, 5), (3, 6),
+    (4, 5), (4, 6), (4, 7),
+    (5, 6), (5, 7), (5, 8),
+    (6, 7), (6, 8), (6, 9),
+    (7, 8), (7, 9), (7, 10),
+    (8, 9), (8, 10), (8, 1),
+    (9, 10), (9, 1), (9, 2),
+    (10, 1), (10, 2), (10, 3),
+    (11, 12), (11, 13), (11, 14), (11, 15), (11, 1),
+    (12, 13), (12, 14), (12, 15), (12, 1), (12, 2),
+    (13, 14), (13, 15), (13, 1), (13, 2), (13, 3),
+    (14, 15), (14, 1), (14, 2), (14, 3), (14, 4),
+    (15, 1), (15, 2), (15, 3), (15, 4), (15, 5),
+    (16, 17), (16, 18), (16, 19), (16, 20), (16, 1), (16, 2), (16, 3), (16, 4), (16, 5), (16, 6),
+    (17, 18), (17, 19), (17, 20), (17, 1), (17, 2), (17, 3), (17, 4), (17, 5), (17, 6), (17, 7),
+    (18, 19), (18, 20), (18, 1), (18, 2), (18, 3), (18, 4), (18, 5), (18, 6), (18, 7), (18, 8),
+    (19, 20), (19, 1), (19, 2), (19, 3), (19, 4), (19, 5), (19, 6), (19, 7), (19, 8), (19, 9),
+    (20, 1), (20, 2), (20, 3), (20, 4), (20, 5), (20, 6), (20, 7), (20, 8), (20, 9), (20, 10),
+    (21, 22), (21, 23), (21, 24), (21, 25), (21, 1), (21, 2), (21, 3), (21, 4), (21, 5), (21, 6),
+    (21, 7), (21, 8), (21, 9), (21, 10), (21, 11), (21, 12), (21, 13), (21, 14), (21, 15), (21, 16),
+    (22, 23), (22, 24), (22, 25), (22, 1), (22, 2), (22, 3), (22, 4), (22, 5), (22, 6), (22, 7),
+    (22, 8), (22, 9), (22, 10), (22, 11), (22, 12), (22, 13), (22, 14), (22, 15), (22, 16), (22, 17),
+    (23, 24), (23, 25), (23, 1), (23, 2), (23, 3), (23, 4), (23, 5), (23, 6), (23, 7), (23, 8),
+    (23, 9), (23, 10), (23, 11), (23, 12), (23, 13), (23, 14), (23, 15), (23, 16), (23, 17), (23, 18),
+    (24, 25), (24, 1), (24, 2), (24, 3), (24, 4), (24, 5), (24, 6), (24, 7), (24, 8), (24, 9),
+    (24, 10), (24, 11), (24, 12), (24, 13), (24, 14), (24, 15), (24, 16), (24, 17), (24, 18), (24, 19),
+    (25, 1), (25, 2), (25, 3), (25, 4), (25, 5), (25, 6), (25, 7), (25, 8), (25, 9), (25, 10),
+    (25, 11), (25, 12), (25, 13), (25, 14), (25, 15), (25, 16), (25, 17), (25, 18), (25, 19), (25, 20)
+;
