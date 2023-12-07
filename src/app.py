@@ -15,6 +15,8 @@ import json
 
 # to run this file, must go to myEnv->Scripts at type "activate" in the command line
 # then go to src and run "python app.py"
+# for dates, use DATE_FORMAT(attributeName, '%M %D, %Y') AS attributeName
+# for times, use TIME_FORMAT(attributeName, '%H:%i') AS attributeName
 
 # the following code is from the hw9.qmd file
 
@@ -129,21 +131,17 @@ def get_artists():
 
 @app.route('/songs', methods=['GET'])
 def get_songs():
-    query = text("SELECT * FROM song WHERE id <= 20;")
+    query = text("SELECT ID, name, tempo, song_key, plays, TIME_FORMAT(duration, '%H:%i') AS duration, artist_ID, album_ID FROM song WHERE id <= 20;")
     song_list = testExecution(db.session.execute(query))
-    print(song_list)
     if(song_list):
-        songs_dict = [{'ID': ID, 'name': name, 'tempo': tempo, 'song_key': song_key, 'plays': plays, 'duration': duration, 'artist_ID': artist_ID, 'album_ID': album_ID} for ID, name, tempo, song_key, plays, duration, artist_ID, album_ID in song_list]
-        json_data = json.dumps(songs_dict, default=lambda x: serialize_time(x), indent=2)
-        return(json_data)
-        #return jsonify(songs=song_list)
+        return jsonify(songs=song_list)
     return jsonify(message='No songs have been added.'), 404
 
 # Album methods:
 
 @app.route('/albums', methods=['GET'])
 def get_albums():
-    query = text("SELECT * FROM album;")
+    query = text("SELECT ID, name, record_label, genre, DATE_FORMAT(release_date, '%M %D, %Y') AS release_date, classification, TIME_FORMAT(duration, '%H:%i') AS duration, artist_ID FROM album;")
     album_list = testExecution(db.session.execute(query))
     if(album_list):
         return jsonify(albums=album_list)
@@ -153,7 +151,7 @@ def get_albums():
 
 @app.route('/playlists', methods=['GET'])
 def get_playlists():
-    query = text("SELECT * FROM playlist;")
+    query = text("SELECT ID, name, description, TIME_FORMAT(duration, '%H:%i') AS duration, user_ID FROM playlist;")
     playlist_list = testExecution(db.session.execute(query))
     if(playlist_list):
         return jsonify(playlists=playlist_list)

@@ -228,7 +228,7 @@ select * from artist;
 -- Album
 INSERT INTO album (name, record_label, genre, release_date, classification, duration, artist_ID) VALUES
 ('1989', 'Big Machine Records', 'Pop', '2014-10-27', 'Album', '48:41', 1),
-('÷ (Divide)', 'Atlantic Records', 'Pop', '2017-03-03', 'Album', '46:14', 2),
+('Divide', 'Atlantic Records', 'Pop', '2017-03-03', 'Album', '46:14', 2),
 ('25', 'XL Recordings', 'Pop', '2015-11-20', 'Album', '43:47', 3),
 ('Dangerously In Love', 'Columbia Records', 'R&B', '2003-06-24', 'Album', '59:00', 4),
 ('Views', 'OVO Sound', 'Hip Hop', '2016-04-29', 'Album', '81:31', 5),
