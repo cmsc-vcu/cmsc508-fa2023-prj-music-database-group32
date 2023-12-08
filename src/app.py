@@ -128,14 +128,70 @@ def get_artists():
     return jsonify(message='No artists have been added.'), 404
 
 # Song methods:
+# Select songs with filters (artist id, artist name, album id, album name, song name, key, tempo)
+    # Key required, any key
+# Add songs (required info + optional info)
+    # Artist key required, can only add their own songs
+# Remove songs
+    # ^Same requirement
+# Update songs (1 attribute at a time)
+    # ^Same requirement
 
 @app.route('/songs', methods=['GET'])
 def get_songs():
+    name_regex = request.args.get('name')
+    tempo_regex = request.args.get('tempo')
+    key_regex = request.args.get('key')
+    plays_regex = request.args.get('plays')
+    duration_regex = request.args.get('duration')
+    artist_regex = request.args.get('artist')
+    artist_id_regex = request.args.get('artist_id')
+    album_regex = request.args.get('album')
+    album_id_regex = request.args.get('album_id')
+    query = text("SELECT song.ID, song.name, tempo, song_key, plays, TIME_FORMAT(song.duration, '%H:%i') AS duration, song.artist_ID, artist.name AS artist_name, album_ID, album.name AS album_name FROM song JOIN artist ON song.artist_ID = artist.ID JOIN album ON song.album_ID = album.ID WHERE"
+                 "(song.name REGEXP :name_regex OR :name_regex IS NULL) AND"
+                 "(song.tempo REGEXP :tempo_regex OR :tempo_regex IS NULL) AND"
+                 "(song.song_key REGEXP :key_regex OR :key_regex IS NULL) AND"
+                 "(song.plays REGEXP :plays_regex OR :plays_regex IS NULL) AND"
+                 "(song.duration REGEXP :duration_regex OR :duration_regex IS NULL) AND"
+                 "(artist.name REGEXP :artist_regex OR :artist_regex IS NULL) AND"
+                 "(artist.ID REGEXP :artist_id_regex OR :artist_id_regex IS NULL) AND"
+                 "(album.name REGEXP :album_regex OR :album_regex IS NULL) AND"
+                 "(album.ID REGEXP :album_id_regex OR :album_id_regex IS NULL);")
+    result = db.session.execute(query, {'name_regex': name_regex,'tempo_regex': tempo_regex,'key_regex': key_regex,'plays_regex': plays_regex,'duration_regex': duration_regex,'artist_regex': artist_regex,'artist_id_regex': artist_id_regex, 'album_regex': album_regex,'album_id_regex': album_id_regex})
+    songs_list = [{'Song ID': song.ID, 'Name': song.name, 'Artist ID': song.album_ID, 'Artist': song.artist_name, 'Album ID': song.album_ID, 'Album': song.album_name, 'Duration': song.duration, 'Plays': song.plays, 'Tempo': song.tempo, 'Key': song.song_key} for song in result]
+    return jsonify(songs_list)
+
+
+    
+    """artist_name = request.args.get('artist')
+    if artist_name:
+        query = text("SELECT song.ID, song.name, tempo, song_key, plays, TIME_FORMAT(duration, '%H:%i') AS duration, artist_ID, artist.name, album_ID FROM song JOIN artist ON song.artist_ID = artist.ID WHERE artist.name = :artist_name;")
+        song_list = testExecution(db.session.execute(query, {'artist_name': artist_name}))
+        if(song_list):
+            return jsonify(songs=song_list)
+        return jsonify(message=':artist_name has no songs.'), 404
     query = text("SELECT ID, name, tempo, song_key, plays, TIME_FORMAT(duration, '%H:%i') AS duration, artist_ID, album_ID FROM song WHERE id <= 20;")
     song_list = testExecution(db.session.execute(query))
     if(song_list):
         return jsonify(songs=song_list)
-    return jsonify(message='No songs have been added.'), 404
+    return jsonify(message='No songs have been added.'), 404"""
+
+@app.route('/songs/<int:song_id>', methods=['GET'])
+def get_song_by_id(song_id):
+    query = text("SELECT ID, name, tempo, song_key, plays, TIME_FORMAT(duration, '%H:%i') AS duration, artist_ID, album_ID FROM song WHERE id = :song_id;")
+    song_list = testExecution(db.session.execute(query, {'song_id': song_id}))
+    if(song_list):
+        return jsonify(songs=song_list)
+    return jsonify(message='Song not found.'), 404
+
+@app.route('/songs/?artist=<string:artist_name>', methods=['GET'])
+def get_song_by_artist(artist_name):
+    query = text("SELECT ID, name, tempo, song_key, plays, TIME_FORMAT(duration, '%H:%i') AS duration, artist_ID, album_ID FROM song JOIN (SELECT ID, name FROM artist) ON song.artistID = artist.ID WHERE artist.name = :artist_name;")
+    song_list = testExecution(db.session.execute(query, {'artist_name': artist_name}))
+    if(song_list):
+        return jsonify(songs=song_list)
+    return jsonify(message=':artist_name has no songs.'), 404
 
 # Album methods:
 
