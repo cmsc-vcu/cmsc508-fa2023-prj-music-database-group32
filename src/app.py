@@ -160,7 +160,9 @@ def get_songs():
                  "(album.ID REGEXP :album_id_regex OR :album_id_regex IS NULL);")
     result = db.session.execute(query, {'name_regex': name_regex,'tempo_regex': tempo_regex,'key_regex': key_regex,'plays_regex': plays_regex,'duration_regex': duration_regex,'artist_regex': artist_regex,'artist_id_regex': artist_id_regex, 'album_regex': album_regex,'album_id_regex': album_id_regex})
     songs_list = [{'Song ID': song.ID, 'Name': song.name, 'Artist ID': song.album_ID, 'Artist': song.artist_name, 'Album ID': song.album_ID, 'Album': song.album_name, 'Duration': song.duration, 'Plays': song.plays, 'Tempo': song.tempo, 'Key': song.song_key} for song in result]
-    return jsonify(songs_list)
+    if(songs_list):
+        return jsonify(songs_list)
+    return jsonify(message='No songs fulfill this criteria.'), 404
 
 
     
