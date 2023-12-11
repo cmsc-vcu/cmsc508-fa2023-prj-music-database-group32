@@ -17,9 +17,6 @@ CREATE TABLE user (
     PRIMARY KEY(ID)
 );
 
-ALTER TABLE user (
-ADD COLUMN auth_key VARCHAR(255));
-
 
 DROP TABLE IF EXISTS artist;
 CREATE TABLE artist (

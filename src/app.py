@@ -102,6 +102,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{config['user']}:{config['password']}@{config['host']}/{config['database']}"
 db = SQLAlchemy(app)
 
+
 # API Methods:
 
 # User methods:
