@@ -12,6 +12,10 @@ from IPython.display import display, Markdown
 import pymysql
 from datetime import time, datetime
 import json
+import connexion
+
+app = connexion.App(__name__, specification_dir="./")
+app.add_api("swagger.yml")
 
 # note to self: add ?token=285247389 for user authentication
 
@@ -93,6 +97,7 @@ def iterateTest(list):
         for j in i:
             print(j)
 
+# configure Flask app
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{config['user']}:{config['password']}@{config['host']}/{config['database']}"
 db = SQLAlchemy(app)
@@ -457,4 +462,4 @@ def delete_playlist(playlist_id):
         return jsonify({'message': 'Playlist not found'})
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5000, debug=True)

@@ -48,6 +48,7 @@ Your database is to be accessible from the server through a RESTful API. What is
 
 somehow, you need to demonstrate how the API works, and that the API actually works. I leave this one to you. 
 
+
 # Links to your source code:  
 
 This includes your DDL and DML SQL code. Your database should be able to be rebuilt from scratch using your DML and DDL.
@@ -616,22 +617,22 @@ gantt
     title Project Schedule
     dateFormat MM-DD
     axisFormat %b %d
-    Deliverable 4 : :done, milestone, m1, 10-15, 10-15
+    Deliverable 4 : done, milestone, m1, 10-15, 10-15
     section Deliverable 5
-        Work on database: done, a1, 10-20, 11-03
-        Status report 1 : done, a1, 10-27, 11-03
-        Deliverable 5 : done, milestone, m1, 11-03, 11-03
+        Work on database:done,a1, 10-20, 11-03
+        Status report 1 :done,a1, 10-27, 11-03
+        Deliverable 5 : done,milestone, m1, 11-03, 11-03
     section Deliverable 6
-        Work on database: done, a1, 11-03, 11-17
-        Status report 2 : done, a1, 11-10, 11-17
+        Work on database:done,a1, 11-03, 11-17
+        Status report 2 :done, a1, 11-10, 11-17
         Deliverable 6 : done, milestone, m1, 11-17, 11-17
     section Deliverable 7
-        Work on database: done, a2, 11-17, 12-01
-        API definition  : done, a2, 12-01, 12-08
-        API deminstration: done, a2, 12-01, 12-08
-        Reflection: done, a2, 12-04, 12-08
-        Record zoom video: done, milestone, a2, 12-09, 12-09
-        Make README.md  : done, a2, 12-08, 12-11
+        Work on database:done,a2, 11-17, 12-01
+        API definition  :done,a2, 12-01, 12-08
+        API demonstration:done, a2, 12-01, 12-08
+        Reflection:done, a2, 12-04, 12-08
+        Record zoom video:done, milestone, a2, 12-09, 12-09
+        Make README.md  :done,a2, 12-08, 12-11
         Deliverable 7 : done, milestone, m1, 12-11, 12-11
 ```
 
