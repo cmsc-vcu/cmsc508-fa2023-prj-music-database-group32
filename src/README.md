@@ -1,5 +1,4 @@
 ---
-title: CMSC508 - Group Project Deliverable 4
 date: 10/15/2023
 author: Rachel Farzan, Javeria Hanif, Feyza Sakin
 format:
@@ -8,7 +7,17 @@ format:
         toc: true
         embed-resources: true
 ---
+# Music Database 
+
+- update readme
+- add videos and html links 
+
 ## Description
+ 
+
+This final report serves as an extension to deliverable 4, encompassing a comprehensive overview of our project. It spans from the initial stages to the final implementation, incorporating essential components such as the project description, problem domain analysis, Entity-Relationship Diagrams (ERDs), relational schemas, functional dependencies, normalization notes, relational algebra queries, initial sample data, API definition, DDL and DML SQL code, future considerations, conclusive reflections from the team, and accessible references including the GitHub source repository, GitHub page, video links, HTML links, and more.
+
+### Phase 4 Notes 
 
 The following has ER diagrams in Chen and Crow’s foot with design notes, relational schemas, functional dependencies, normalization notes, queries, and sample data for a music database.
 
@@ -28,13 +37,16 @@ In the sample data, tables for each relation are put with sample values. The tab
 
 To render the Deliverable4.qmd file into Deliverable4.html file, “quarto render Deliverable4.qmd --to html” is used.
 
-# Videos
+### Videos
 
-[Video 1](https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+3+-+Version+2/1_thnnkrtm): Original video from project deliverable 3
+[Deliverable 3 Video](https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+3+-+Version+2/1_thnnkrtm)
 
-[Video 2](https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+4/1_xyo18fcy): Video from project deliverable 4
+[Deliverable 4 Video](https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+4/1_xyo18fcy)
 
-# HTML document
+[Deliverable 7 Video]()
 
-[HTML document](https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32/blob/main/reports/Deliverable4.html)
- 
+### HTML Documents
+
+[Deliverable 4 HTML](https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32/blob/main/reports/Deliverable4.html)
+
+[Deliverable 7 HTML]()

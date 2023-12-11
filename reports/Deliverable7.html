@@ -3446,6 +3446,17 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 
 </header>
 
+<pre class="{sql}"><code>CREATE TABLE playlist (
+    ID INT AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(255),
+    duration TIME NOT NULL,
+    user_ID INT NOT NULL,
+    PRIMARY KEY(ID),
+    FOREIGN KEY(user_ID)
+        REFERENCES user (ID)
+        ON DELETE CASCADE
+);</code></pre>
 <section id="problem-domain" class="level1">
 <h1>Problem Domain</h1>
 <p>We aim to create a music database, focusing on the domain of music, which is defined as the combination of vocal or instrumental sounds to create beauty, harmony, and express emotion. Music has a rich history, initially serving purposes such as imitating nature, frightening predators, and aiding communication. Some argue that even in ancient times, music was used to convey emotions, a purpose it continues to serve today.</p>

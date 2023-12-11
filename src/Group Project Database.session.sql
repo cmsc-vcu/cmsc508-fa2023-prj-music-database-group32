@@ -783,6 +783,22 @@ BEGIN
     UPDATE playlist SET duration = ADDTIME(duration, added_song_duration) WHERE ID = NEW.playlist_ID;
 END;
 
+/* Every time we delete a song from the playlist, dec the playlist's duration as much as the song's duration*/
+    /* 1 - Trigger is named "delete_song_for_playlist" */
+CREATE TRIGGER delete_song_for_playlist
+    /* 2 - Use the trigger after there's delete to the "playlist_song" */
+AFTER DELETE ON playlist_song FOR EACH ROW
+    /* 3 - Since we've multiple SQL statements (e.g. "SELECT" and "UPDATE"), we need to have "BEGIN" and "END" */
+BEGIN
+        /* 4 - Create a new duration value "deleted_song_duration" to save the deleted song's duration*/
+    DECLARE deleted_song_duration TIME;
+        /* 5 - Get the delete song's duration from the "song" table with its ID */
+        /* 6 - To "deleted_song_duration," subtract deleted song's duration by using "INTO"*/
+    SELECT song.duration INTO deleted_song_duration FROM song WHERE song.ID = OLD.song_ID;
+        /* - Dec "playlist"'s duration by the deleted song's duration */
+    UPDATE playlist SET duration = SUBTIME(duration, deleted_song_duration) WHERE ID = OLD.playlist_ID;
+END;
+
 INSERT INTO artist_song (artist_ID, song_ID) VALUES
 (1, 1),
 (1, 2),

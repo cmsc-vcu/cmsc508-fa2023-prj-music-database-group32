@@ -1,5 +1,5 @@
 ---
-title: Group Project Deliverable 7
+title: Deliverable 7
 date: 11/20/2023
 author: Rachel Farzan, Javeria Hanif, Feyza Sakin
 format:
@@ -11,6 +11,32 @@ format:
         embed-resources: true
 
 ---
+
+# Description 
+
+This final report serves as an extension to deliverable 4, encompassing a comprehensive overview of our project. It spans from the initial stages to the final implementation, incorporating essential components such as the project description, problem domain analysis, Entity-Relationship Diagrams (ERDs), relational schemas, functional dependencies, normalization notes, relational algebra queries, initial sample data, API definition, DDL and DML SQL code, future considerations, conclusive reflections from the team, and accessible references including the GitHub source repository, GitHub page, video links, HTML links, and more.
+
+# API definition: 
+
+Your database is to be accessible from the server through a RESTful API. What is your API definition? What are the various ways to get data? This should be documented so that someone wanting to leverage your database can understand how to access it.
+
+# Demonstration of the API in action: 
+
+somehow, you need to demonstrate how the API works, and that the API actually works. I leave this one to you. 
+
+# Links to your source code:  
+
+This includes your DDL and DML SQL code. Your database should be able to be rebuilt from scratch using your DML and DDL.
+
+# Future considerations: 
+
+What needs to be done next to take your project to the next level? If you had more time, what would you do next?
+
+# Reflections on the overall project: 
+
+How did the project go? Did you achieve what you originally intended to build? If not, what kept you from achieving it?
+
+
 # Problem Domain
 
 We aim to create a music database, focusing on the domain of music, which is defined as the combination of vocal or instrumental sounds to create beauty, harmony, and express emotion. Music has a rich history, initially serving purposes such as imitating nature, frightening predators, and aiding communication. Some argue that even in ancient times, music was used to convey emotions, a purpose it continues to serve today.
