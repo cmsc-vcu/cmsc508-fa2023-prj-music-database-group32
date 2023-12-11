@@ -14,6 +14,7 @@ CREATE TABLE user (
     user_name VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     account_type VARCHAR(255) NOT NULL CHECK (account_type IN ("free", "premium", "artist")),
+    user_key VARCHAR(255),
     PRIMARY KEY(ID)
 );
 
