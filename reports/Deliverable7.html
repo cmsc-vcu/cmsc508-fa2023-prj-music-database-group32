@@ -9,7 +9,7 @@
 <meta name="author" content="Rachel Farzan, Javeria Hanif, Feyza Sakin">
 <meta name="dcterms.date" content="2023-11-20">
 
-<title>Group Project Deliverable 7</title>
+<title>Deliverable 7</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3391,7 +3391,22 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#problem-domain" id="toc-problem-domain" class="nav-link active" data-scroll-target="#problem-domain">Problem Domain</a></li>
+  <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description">Description</a></li>
+  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a>
+  <ul class="collapse">
+  <li><a href="#github-page" id="toc-github-page" class="nav-link" data-scroll-target="#github-page">Github Page</a></li>
+  <li><a href="#source-repository" id="toc-source-repository" class="nav-link" data-scroll-target="#source-repository">Source Repository</a>
+  <ul class="collapse">
+  <li><a href="#videos" id="toc-videos" class="nav-link" data-scroll-target="#videos">Videos</a></li>
+  <li><a href="#html-documents" id="toc-html-documents" class="nav-link" data-scroll-target="#html-documents">HTML Documents</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#api-definition" id="toc-api-definition" class="nav-link" data-scroll-target="#api-definition">API definition:</a></li>
+  <li><a href="#demonstration-of-the-api-in-action" id="toc-demonstration-of-the-api-in-action" class="nav-link" data-scroll-target="#demonstration-of-the-api-in-action">Demonstration of the API in action:</a></li>
+  <li><a href="#links-to-your-source-code" id="toc-links-to-your-source-code" class="nav-link" data-scroll-target="#links-to-your-source-code">Links to your source code:</a></li>
+  <li><a href="#future-considerations" id="toc-future-considerations" class="nav-link" data-scroll-target="#future-considerations">Future considerations:</a></li>
+  <li><a href="#reflections-on-the-overall-project" id="toc-reflections-on-the-overall-project" class="nav-link" data-scroll-target="#reflections-on-the-overall-project">Reflections on the overall project:</a></li>
+  <li><a href="#problem-domain" id="toc-problem-domain" class="nav-link" data-scroll-target="#problem-domain">Problem Domain</a></li>
   <li><a href="#need" id="toc-need" class="nav-link" data-scroll-target="#need">Need</a></li>
   <li><a href="#context-scope-and-perspective" id="toc-context-scope-and-perspective" class="nav-link" data-scroll-target="#context-scope-and-perspective">Context, scope and perspective</a></li>
   <li><a href="#user-roles-and-use-cases" id="toc-user-roles-and-use-cases" class="nav-link" data-scroll-target="#user-roles-and-use-cases">User roles and use cases</a></li>
@@ -3408,10 +3423,6 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
   <li><a href="#queries" id="toc-queries" class="nav-link" data-scroll-target="#queries">Queries</a></li>
   <li><a href="#sample-data" id="toc-sample-data" class="nav-link" data-scroll-target="#sample-data">Sample Data</a></li>
   <li><a href="#project-schedule" id="toc-project-schedule" class="nav-link" data-scroll-target="#project-schedule">Project schedule</a></li>
-  <li><a href="#videos" id="toc-videos" class="nav-link" data-scroll-target="#videos">Videos</a>
-  <ul class="collapse">
-  <li><a href="#github-repository" id="toc-github-repository" class="nav-link" data-scroll-target="#github-repository">Github Repository</a></li>
-  </ul></li>
   </ul>
 </nav>
 </div>
@@ -3419,7 +3430,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Group Project Deliverable 7</h1>
+<h1 class="title">Deliverable 7</h1>
 </div>
 
 
@@ -3446,17 +3457,52 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 
 </header>
 
-<pre class="{sql}"><code>CREATE TABLE playlist (
-    ID INT AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
-    description VARCHAR(255),
-    duration TIME NOT NULL,
-    user_ID INT NOT NULL,
-    PRIMARY KEY(ID),
-    FOREIGN KEY(user_ID)
-        REFERENCES user (ID)
-        ON DELETE CASCADE
-);</code></pre>
+<section id="description" class="level1">
+<h1>Description</h1>
+<p>This final report serves as an extension to deliverable 4, encompassing a comprehensive overview of our project. It spans from the initial stages to the final implementation, incorporating essential components such as the project description, problem domain analysis, Entity-Relationship Diagrams (ERDs), relational schemas, functional dependencies, normalization notes, relational algebra queries, initial sample data, API definition, DDL and DML SQL code, future considerations, conclusive reflections from the team, and accessible references including the GitHub source repository, GitHub page, video links, HTML links, and more.</p>
+</section>
+<section id="resources" class="level1">
+<h1>Resources</h1>
+<section id="github-page" class="level2">
+<h2 class="anchored" data-anchor-id="github-page">Github Page</h2>
+<p><a href="https://github.com/cmsc-vcu/music-database-group32.github.io">Github.io</a></p>
+</section>
+<section id="source-repository" class="level2">
+<h2 class="anchored" data-anchor-id="source-repository">Source Repository</h2>
+<p><a href="https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32">Music Database Repository</a></p>
+<section id="videos" class="level3">
+<h3 class="anchored" data-anchor-id="videos">Videos</h3>
+<p><a href="https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+3+-+Version+2/1_thnnkrtm">Deliverable 3 Video</a></p>
+<p><a href="https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+4/1_xyo18fcy">Deliverable 4 Video</a></p>
+<p><a href>Deliverable 7 Video</a></p>
+</section>
+<section id="html-documents" class="level3">
+<h3 class="anchored" data-anchor-id="html-documents">HTML Documents</h3>
+<p><a href="https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32/blob/main/reports/Deliverable4.html">Deliverable 4 HTML</a></p>
+<p><a href>Deliverable 7 HTML</a></p>
+</section>
+</section>
+</section>
+<section id="api-definition" class="level1">
+<h1>API definition:</h1>
+<p>Your database is to be accessible from the server through a RESTful API. What is your API definition? What are the various ways to get data? This should be documented so that someone wanting to leverage your database can understand how to access it.</p>
+</section>
+<section id="demonstration-of-the-api-in-action" class="level1">
+<h1>Demonstration of the API in action:</h1>
+<p>somehow, you need to demonstrate how the API works, and that the API actually works. I leave this one to you.</p>
+</section>
+<section id="links-to-your-source-code" class="level1">
+<h1>Links to your source code:</h1>
+<p>This includes your DDL and DML SQL code. Your database should be able to be rebuilt from scratch using your DML and DDL.</p>
+</section>
+<section id="future-considerations" class="level1">
+<h1>Future considerations:</h1>
+<p>What needs to be done next to take your project to the next level? If you had more time, what would you do next?</p>
+</section>
+<section id="reflections-on-the-overall-project" class="level1">
+<h1>Reflections on the overall project:</h1>
+<p>How did the project go? Did you achieve what you originally intended to build? If not, what kept you from achieving it?</p>
+</section>
 <section id="problem-domain" class="level1">
 <h1>Problem Domain</h1>
 <p>We aim to create a music database, focusing on the domain of music, which is defined as the combination of vocal or instrumental sounds to create beauty, harmony, and express emotion. Music has a rich history, initially serving purposes such as imitating nature, frightening predators, and aiding communication. Some argue that even in ancient times, music was used to convey emotions, a purpose it continues to serve today.</p>
@@ -4895,40 +4941,31 @@ following–user
 <div>
 <div>
 <pre class="mermaid mermaid-js">gantt
-    title CMSC 508 Project Schedule
+    title Project Schedule
     dateFormat MM-DD
     axisFormat %b %d
-    Deliverable 4 : milestone, m1, 10-15, 10-15
+    Deliverable 4 : :done, milestone, m1, 10-15, 10-15
     section Deliverable 5
-        Work on database:a1, 10-20, 11-03
-        Status report 1 :a1, 10-27, 11-03
-        Deliverable 5 : milestone, m1, 11-03, 11-03
+        Work on database: done, a1, 10-20, 11-03
+        Status report 1 : done, a1, 10-27, 11-03
+        Deliverable 5 : done, milestone, m1, 11-03, 11-03
     section Deliverable 6
-        Work on database:a1, 11-03, 11-17
-        Status report 2 :a1, 11-10, 11-17
-        Deliverable 6 : milestone, m1, 11-17, 11-17
+        Work on database: done, a1, 11-03, 11-17
+        Status report 2 : done, a1, 11-10, 11-17
+        Deliverable 6 : done, milestone, m1, 11-17, 11-17
     section Deliverable 7
-        Work on database:a2, 11-17, 12-01
-        API definition  :a2, 12-01, 12-08
-        API deminstration:a2, 12-01, 12-08
-        Reflection:a2, 12-04, 12-08
-        Record zoom video:milestone, a2, 12-09, 12-09
-        Make README.md  :a2, 12-08, 12-11
-        Deliverable 7 : milestone, m1, 12-11, 12-11
+        Work on database: done, a2, 11-17, 12-01
+        API definition  : done, a2, 12-01, 12-08
+        API deminstration: done, a2, 12-01, 12-08
+        Reflection: done, a2, 12-04, 12-08
+        Record zoom video: done, milestone, a2, 12-09, 12-09
+        Make README.md  : done, a2, 12-08, 12-11
+        Deliverable 7 : done, milestone, m1, 12-11, 12-11
 </pre>
 </div>
 </div>
 </div>
 </div>
-</section>
-<section id="videos" class="level1">
-<h1>Videos</h1>
-<p><a href="https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+3+-+Version+2/1_thnnkrtm">Video 1</a>: Original video from project deliverable 3</p>
-<p><a href="https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+4/1_xyo18fcy">Video 2</a>: Video from project deliverable 4</p>
-<section id="github-repository" class="level3">
-<h3 class="anchored" data-anchor-id="github-repository">Github Repository</h3>
-<p><a href="https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32">Github</a></p>
-</section>
 </section>
 
 </main>

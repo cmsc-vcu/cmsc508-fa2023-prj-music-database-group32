@@ -16,6 +16,30 @@ format:
 
 This final report serves as an extension to deliverable 4, encompassing a comprehensive overview of our project. It spans from the initial stages to the final implementation, incorporating essential components such as the project description, problem domain analysis, Entity-Relationship Diagrams (ERDs), relational schemas, functional dependencies, normalization notes, relational algebra queries, initial sample data, API definition, DDL and DML SQL code, future considerations, conclusive reflections from the team, and accessible references including the GitHub source repository, GitHub page, video links, HTML links, and more.
 
+# Resources 
+
+## Github Page 
+
+[Github.io](https://github.com/cmsc-vcu/music-database-group32.github.io)
+
+## Source Repository
+
+[Music Database Repository](https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32)
+
+### Videos
+
+[Deliverable 3 Video](https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+3+-+Version+2/1_thnnkrtm)
+
+[Deliverable 4 Video](https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+4/1_xyo18fcy)
+
+[Deliverable 7 Video]()
+
+### HTML Documents
+
+[Deliverable 4 HTML](https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32/blob/main/reports/Deliverable4.html)
+
+[Deliverable 7 HTML]()
+
 # API definition: 
 
 Your database is to be accessible from the server through a RESTful API. What is your API definition? What are the various ways to get data? This should be documented so that someone wanting to leverage your database can understand how to access it.
@@ -589,34 +613,25 @@ $$
 
 ```{mermaid}
 gantt
-    title CMSC 508 Project Schedule
+    title Project Schedule
     dateFormat MM-DD
     axisFormat %b %d
-    Deliverable 4 : milestone, m1, 10-15, 10-15
+    Deliverable 4 : :done, milestone, m1, 10-15, 10-15
     section Deliverable 5
-        Work on database:a1, 10-20, 11-03
-        Status report 1 :a1, 10-27, 11-03
-        Deliverable 5 : milestone, m1, 11-03, 11-03
+        Work on database: done, a1, 10-20, 11-03
+        Status report 1 : done, a1, 10-27, 11-03
+        Deliverable 5 : done, milestone, m1, 11-03, 11-03
     section Deliverable 6
-        Work on database:a1, 11-03, 11-17
-        Status report 2 :a1, 11-10, 11-17
-        Deliverable 6 : milestone, m1, 11-17, 11-17
+        Work on database: done, a1, 11-03, 11-17
+        Status report 2 : done, a1, 11-10, 11-17
+        Deliverable 6 : done, milestone, m1, 11-17, 11-17
     section Deliverable 7
-        Work on database:a2, 11-17, 12-01
-        API definition  :a2, 12-01, 12-08
-        API deminstration:a2, 12-01, 12-08
-        Reflection:a2, 12-04, 12-08
-        Record zoom video:milestone, a2, 12-09, 12-09
-        Make README.md  :a2, 12-08, 12-11
-        Deliverable 7 : milestone, m1, 12-11, 12-11
+        Work on database: done, a2, 11-17, 12-01
+        API definition  : done, a2, 12-01, 12-08
+        API deminstration: done, a2, 12-01, 12-08
+        Reflection: done, a2, 12-04, 12-08
+        Record zoom video: done, milestone, a2, 12-09, 12-09
+        Make README.md  : done, a2, 12-08, 12-11
+        Deliverable 7 : done, milestone, m1, 12-11, 12-11
 ```
-
-# Videos
-
-[Video 1](https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+3+-+Version+2/1_thnnkrtm): Original video from project deliverable 3
-
-[Video 2](https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+4/1_xyo18fcy): Video from project deliverable 4
-
-### Github Repository
-[Github](https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32)
 
