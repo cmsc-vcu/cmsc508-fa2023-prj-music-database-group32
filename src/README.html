@@ -9,7 +9,7 @@
 <meta name="author" content="Rachel Farzan, Javeria Hanif, Feyza Sakin">
 <meta name="dcterms.date" content="2023-10-15">
 
-<title>CMSC508 - Group Project Deliverable 4</title>
+<title>readme</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -2991,45 +2991,33 @@ vertical-align: -.125em;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description">Description</a></li>
+  <li><a href="#music-database" id="toc-music-database" class="nav-link active" data-scroll-target="#music-database">Music Database</a>
+  <ul class="collapse">
+  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a>
+  <ul class="collapse">
+  <li><a href="#phase-4-notes" id="toc-phase-4-notes" class="nav-link" data-scroll-target="#phase-4-notes">Phase 4 Notes</a></li>
   <li><a href="#videos" id="toc-videos" class="nav-link" data-scroll-target="#videos">Videos</a></li>
-  <li><a href="#html-document" id="toc-html-document" class="nav-link" data-scroll-target="#html-document">HTML document</a></li>
+  <li><a href="#html-documents" id="toc-html-documents" class="nav-link" data-scroll-target="#html-documents">HTML Documents</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">CMSC508 - Group Project Deliverable 4</h1>
-</div>
 
 
-
-<div class="quarto-title-meta">
-
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Rachel Farzan, Javeria Hanif, Feyza Sakin </p>
-          </div>
-  </div>
-    
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">October 15, 2023</p>
-    </div>
-  </div>
-  
-    
-  </div>
-  
-
-</header>
-
+<section id="music-database" class="level1">
+<h1>Music Database</h1>
+<ul>
+<li>update readme</li>
+<li>add videos and html links</li>
+</ul>
 <section id="description" class="level2">
 <h2 class="anchored" data-anchor-id="description">Description</h2>
+<p>This final report serves as an extension to deliverable 4, encompassing a comprehensive overview of our project. It spans from the initial stages to the final implementation, incorporating essential components such as the project description, problem domain analysis, Entity-Relationship Diagrams (ERDs), relational schemas, functional dependencies, normalization notes, relational algebra queries, initial sample data, API definition, DDL and DML SQL code, future considerations, conclusive reflections from the team, and accessible references including the GitHub source repository, GitHub page, video links, HTML links, and more.</p>
+<section id="phase-4-notes" class="level3">
+<h3 class="anchored" data-anchor-id="phase-4-notes">Phase 4 Notes</h3>
 <p>The following has ER diagrams in Chen and Crow’s foot with design notes, relational schemas, functional dependencies, normalization notes, queries, and sample data for a music database.</p>
 <p>We represent different perspectives in Chen and Crow’s foot notations with relation sets. For Chen, rectangles are entities, ovals are attributes, and diamonds are relationships. For relationships in Chen, we represent one-to-one as “1,” zero-to-many as “0…n,” one-to-many as “1…n,” and zero-to-one as “0…1”. For Crow’s foot, each entity has its own table and we can define attributes as primary keys by writing “PK” and foreign keys as “FK.” Also, we can learn the participation and cardinality between entity relationships. While the inner symbols represent participation, the outer symbols are used for cardinality. For participation, “|” is used for total and “o” is used for partial. For cardinality, “{” and “}” are used for many, “|” is used for one, and “o” is used for zero. To render ER diagrams, “dot” is added to the start of Chen and “mermaid” is added to the start of Crow’s foot notation codes while “```” is added to the end of both codes.</p>
 <p>In the design notes, trade-offs for diagrams are discussed.</p>
@@ -3040,14 +3028,18 @@ vertical-align: -.125em;
 <p>In the sample data, tables for each relation are put with sample values. The tables’ names are user, artist, song, album, playlist, artist_song, artist_album, playlist_song, and following.</p>
 <p>To render the Deliverable4.qmd file into Deliverable4.html file, “quarto render Deliverable4.qmd –to html” is used.</p>
 </section>
-<section id="videos" class="level1">
-<h1>Videos</h1>
-<p><a href="https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+3+-+Version+2/1_thnnkrtm">Video 1</a>: Original video from project deliverable 3</p>
-<p><a href="https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+4/1_xyo18fcy">Video 2</a>: Video from project deliverable 4</p>
+<section id="videos" class="level3">
+<h3 class="anchored" data-anchor-id="videos">Videos</h3>
+<p><a href="https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+3+-+Version+2/1_thnnkrtm">Deliverable 3 Video</a></p>
+<p><a href="https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+4/1_xyo18fcy">Deliverable 4 Video</a></p>
+<p><a href>Deliverable 7 Video</a></p>
 </section>
-<section id="html-document" class="level1">
-<h1>HTML document</h1>
-<p><a href="https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32/blob/main/reports/Deliverable4.html">HTML document</a></p>
+<section id="html-documents" class="level3">
+<h3 class="anchored" data-anchor-id="html-documents">HTML Documents</h3>
+<p><a href="https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32/blob/main/reports/Deliverable4.html">Deliverable 4 HTML</a></p>
+<p><a href>Deliverable 7 HTML</a></p>
+</section>
+</section>
 </section>
 
 </main>
