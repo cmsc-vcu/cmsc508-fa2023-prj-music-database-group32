@@ -13,9 +13,8 @@ format:
 - add videos and html links 
 
 ## Description
- 
 
-This final report serves as an extension to deliverable 4, encompassing a comprehensive overview of our project. It spans from the initial stages to the final implementation, incorporating essential components such as the project description, problem domain analysis, Entity-Relationship Diagrams (ERDs), relational schemas, functional dependencies, normalization notes, relational algebra queries, initial sample data, API definition, DDL and DML SQL code, future considerations, conclusive reflections from the team, and accessible references including the GitHub source repository, GitHub page, video links, HTML links, and more.
+This final report serves as an extension to deliverable 4. It covers everything about our project, from the beginning to the end. It includes important things like the project description, analysis of the problem, diagrams, schemas, notes on normalization, queries, sample data, API definition, SQL code, thoughts about the future, what the team thinks, and links to GitHub, videos, HTML, and more.
 
 ### Phase 4 Notes 
 
