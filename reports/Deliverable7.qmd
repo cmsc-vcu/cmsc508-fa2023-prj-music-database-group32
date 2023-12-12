@@ -1,6 +1,6 @@
 ---
 title: Deliverable 7
-date: 11/20/2023
+date: 12/11/2023
 author: Rachel Farzan, Javeria Hanif, Feyza Sakin
 format:
     html:
@@ -16,15 +16,22 @@ format:
 
 This final report serves as an extension to deliverable 4. It covers everything about our project, from the beginning to the end. It includes important things like the project description, analysis of the problem, diagrams, schemas, notes on normalization, queries, sample data, API definition, SQL code, thoughts about the future, what the team thinks, and links to GitHub, videos, HTML, and more.
 
-# Resources 
+# Links to your source code:  
 
-## Github Page 
+**This includes your DDL and DML SQL code. Your database should be able to be rebuilt from scratch using your DML and DDL.**
+
+### Video
+[Video](https://vcu.mediaspace.kaltura.com/media/Deliverable+7/1_w9v8u66l)
+
+### Github Page 
 
 [Github.io](https://github.com/cmsc-vcu/music-database-group32.github.io)
 
-## Source Repository
+### Source Repository
 
 [Music Database Repository](https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32)
+
+# Other Links
 
 ### Videos
 
@@ -38,29 +45,753 @@ This final report serves as an extension to deliverable 4. It covers everything 
 
 [Deliverable 4 HTML](https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32/blob/main/reports/Deliverable4.html)
 
-[Deliverable 7 HTML]()
+[Deliverable 7 HTML](https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32/blob/main/reports/Deliverable7.html)
 
 # API definition: 
 
-Your database is to be accessible from the server through a RESTful API. What is your API definition? What are the various ways to get data? This should be documented so that someone wanting to leverage your database can understand how to access it.
+**Your database is to be accessible from the server through a RESTful API. What is your API definition? What are the various ways to get data? This should be documented so that someone wanting to leverage your database can understand how to access it.**
+
+## Setting up the environment
+
+```{python}
+#| eval: true
+#| echo: false
+
+import os
+import sys
+import pandas as pd
+from tabulate import tabulate
+from dotenv import load_dotenv
+from sqlalchemy import create_engine, text
+from sqlalchemy.exc import OperationalError, ProgrammingError
+from sqlalchemy.exc import ArgumentError, NoSuchModuleError
+from IPython.display import display, Markdown
+import requests
+from utils import hello_from_utils, api_call, api_query
+
+from IPython.display import display,Markdown,HTML
+
+endpoint = "http://localhost:5000"
+
+display(Markdown(f"""<div class="output">{hello_from_utils()}</div>"""))
+print(hello_from_utils())
+```
+
+## Configuring .env 
+
+```{python}
+#| eval: true
+#| echo: true
+
+# make sure to add FLASK_DATABASE to your .env file
+config_map = {
+    'user':'CMSC508_USER',
+    'password':'CMSC508_PASSWORD',
+    'host':'CMSC508_HOST',
+    'database':'FLASK_DATABASE'
+}
+# load and store credentials
+load_dotenv()
+config = {}
+for key in config_map.keys():
+    config[key] = os.getenv(config_map[key])
+flag = False
+for param in config.keys():
+    if config[param] is None:
+        flag = True
+        print(f"Missing {config_map[param]} in .env file")
+
+# build a sqlalchemy engine string
+engine_uri = f"mysql+pymysql://{config['user']}:{config['password']}@{config['host']}/{config['database']}"
+
+```
+
+## Database Connection 
+
+```{python}
+try:
+    conn = create_engine(engine_uri)
+except ArgumentError as e:
+    print(f"create_engine: Argument Error: {e}")
+    #sys.exit(1)
+except NoSuchModuleError as e:
+    print(f"create_engine: No Such Module Error: {e}")
+    #sys.exit(1)
+except Exception as e:
+    print(f"create_engine: An error occurred: {e}")
+    #sys.exit(1)
+```    
+
+## Helper routines 
+
+```{python}
+def my_sql_statement( statement ):
+    """ used with DDL, when the statement doesn't return any results. """
+    try:
+        with conn.begin() as x:
+            x.execute(text(statement))
+            x.commit()
+        result = ""
+    except Exception as e:
+        result = f"Error: {str(e)}"
+    return result
+
+def my_sql_wrapper( query ):
+    """ takes a query and returns a pandas dataframe for output """
+    try:
+        df = pd.read_sql( query, conn )
+    except Exception as e:
+        df = pd.DataFrame({'Query error': ["(see error message above)"]})
+        msg = str(e).replace(") (",")\n(")
+        print(msg)
+    return df
+
+def testExecution(executionResult):
+    rows = executionResult.fetchall()
+    print("rows: ", rows)
+    print()
+    if rows:
+        columns = executionResult.keys()
+        print("columns: ", columns)
+        return [dict(zip(columns, row)) for row in rows]
+    else:
+        return 0
+
+def testKey(user_key):
+    query = text("SELECT account_type FROM user WHERE user_key = :user_key;")
+    result = db.session.execute(query, {'user_key': user_key})
+    user_data = [{'user_key': user.user_key} for user in result]
+    if(not user_data):
+        return 0
+    return user_data[0].get('user_key')
+
+```
 
 # Demonstration of the API in action: 
 
-somehow, you need to demonstrate how the API works, and that the API actually works. I leave this one to you. 
+## API methods
+
+### Logging into an account:
+```{python}
+api_url = "http://localhost:5000/login"
+
+update_data = {
+    "username": "taylor_swift",
+    "password": "taylorpass1"
+}
+
+# Make a PATCH or PUT request
+response = requests.patch(api_url, json=update_data)  # Use 'put' for a PUT request
+
+# Check the response
+print("Logging in as free user")
+if response.status_code == 200:
+    print("User logged in successfully")
+    print(response.json())
+    myList = response.json().get('message').split()
+    myKey = myList[9]
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+### Viewing users
+```{python}  
+api_url1 = "http://localhost:5000/users"
+api_url2 = "http://localhost:5000/users?key=" + myKey
+api_url3 = "http://localhost:5000/users?key=" + myKey + "&account_type=free"
+api_url4 = "http://localhost:5000/users?key=badkey&account_type=premium"
+
+print("Get users with no key")
+response = requests.get(api_url1)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("Get users with proper key")
+response = requests.get(api_url2)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("Get users with proper key and filter")
+response = requests.get(api_url3)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("Get users with improper key")
+response = requests.get(api_url4)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+### Viewing users by ID
+```{python}  
+api_url1 = "http://localhost:5000/users/2?key=" + myKey
+api_url2 = "http://localhost:5000/users/25?key=" + myKey
+
+print("Get user with ID 2")
+response = requests.get(api_url1)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("Get user with id 25")
+response = requests.get(api_url2)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+### Viewing artists
+```{python}  
+api_url1 = "http://localhost:5000/artists?key=" + myKey
+api_url2 = "http://localhost:5000/artists?key=" + myKey + "&name=B"
+
+print("Getting artists with no filters")
+response = requests.get(api_url1)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("Getting artists with filters")
+response = requests.get(api_url2)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+### Viewing songs:
+```{python}  
+api_url1 = "http://localhost:5000/songs?user_key=" + myKey
+api_url2 = "http://localhost:5000/songs?name=love&user_key=" + myKey
+api_url3 = "http://localhost:5000/songs?user_key=" + myKey + "&album=1989&key=C"
+api_url4 = "http://localhost:5000/songs?user_key=badkey"
+
+print("Get all songs")
+response = requests.get(api_url1)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("Get songs with 1 filter: name = love")
+response = requests.get(api_url2)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("Get songs with 2 filters: album = 1989 and key = c")
+response = requests.get(api_url3)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("Get songs with improper key")
+response = requests.get(api_url4)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+### Adding songs:
+
+```{python}
+api_url = "http://localhost:5000/add_song"
+
+# Data to be sent in the POST request
+song_data1 = {
+    "name": "New Song",
+    "tempo": 100,
+    "key": "C",
+    "plays": 100,
+    "duration": "3:30",
+    "album_id": 1,
+    "user_key": myKey
+}
+song_data2 = {
+    "name": "My Other Song",
+    "tempo": 100,
+    "key": "C",
+    "plays": 100,
+    "duration": "3:30",
+    "album_id": 1,
+    "user_key": myKey
+}
+
+print("Adding a song to album 1: 1989")
+response = requests.post(api_url, json=song_data1)
+# Check the response
+if response.status_code == 201:
+    print("Song added successfully")
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("Adding another song to album 1: 1989")
+response = requests.post(api_url, json=song_data2)
+# Check the response
+if response.status_code == 201:
+    print("Song added successfully")
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+### Deleting a song:
+
+```{python}
+# Replace with the actual URL and song ID
+api_url = "http://localhost:5000/delete_song/481?key=" + myKey
+
+print("Deleting the song we just added")
+response = requests.delete(api_url)
+# Check the response
+if response.status_code == 201:
+    print("Song deleted successfully")
+    print(response.json())
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("It cannot be deleted again")
+response = requests.delete(api_url)
+# Check the response
+if response.status_code == 201:
+    print("Song deleted successfully")
+    print(response.json())
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+### Viewing playlists
+
+```{python}
+api_url1 = "http://localhost:5000/playlists?key=" + myKey
+api_url2 = "http://localhost:5000/playlists?key=" + myKey + "&name=B"
 
 
-# Links to your source code:  
+print("Getting playlists with no filters")
+response = requests.get(api_url1)
 
-This includes your DDL and DML SQL code. Your database should be able to be rebuilt from scratch using your DML and DDL.
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
 
-# Future considerations: 
+print("\nGetting playlists with filters")
+response = requests.get(api_url2)
 
-What needs to be done next to take your project to the next level? If you had more time, what would you do next?
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
 
-# Reflections on the overall project: 
+# Adding a playlist
 
-How did the project go? Did you achieve what you originally intended to build? If not, what kept you from achieving it?
+```{python}
 
+# Define the API endpoint for adding a playlist
+api_url1 = "http://localhost:5000/add_playlist?key=" + myKey
+
+# playlist data
+playlist_data = {
+    'name': 'My Awesome Playlist',
+    'description': 'A collection of my favorite songs',
+    'duration': '01:30:00',  
+    'user_ID': 1 
+}
+
+# Send a POST request to add the playlist
+response1 = requests.post(api_url1, json=playlist_data)
+
+# Check the response
+if response1.status_code == 201:
+    print("Playlist added successfully!")
+else:
+    print(f"Error: {response1.status_code} - {response1.text}")
+
+# Now, let's retrieve all playlists after adding one
+api_url2 = "http://localhost:5000/playlists?key=" + myKey
+
+print("\nGetting playlists after adding one")
+response2 = requests.get(api_url2)
+
+# Check the response
+if response2.status_code == 200:
+    playlists = response2.json()
+    print(playlists)
+else:
+    print(f"Error: {response2.status_code} - {response2.text}")
+
+```
+
+### Deleting a playlist
+
+```{python}
+api_url = "http://localhost:5000/playlists/1?key=" + myKey
+
+print("Deleting the playlist we just added")
+response = requests.delete(api_url)
+# Check the response
+if response.status_code == 204:
+    print("Playlist deleted successfully")
+    print(response.json())
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("It cannot be deleted again")
+response = requests.delete(api_url)
+# Check the response
+if response.status_code == 204:
+    print("Playlist deleted successfully")
+    print(response.json())
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+### Updating a playlist
+
+```{python}
+api_url = "http://localhost:5000/update_song/50"
+
+update_data = {
+    'name': 'Updated Playlist Name',
+    'description': 'Updated playlist description',
+    'duration': '02:15:00',  
+    'user_ID': 3,  
+    "user_key": myKey
+}
+
+# Make a PATCH or PUT request
+response = requests.patch(api_url, json=update_data)  
+
+# Check the response
+if response.status_code == 200:
+    print("Playlist updated successfully")
+    print(response.json())
+elif response.status_code == 404:
+    print("Playlist not found")
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+### Logging out of an account:
+```{python}
+api_url = "http://localhost:5000/logout"
+
+# Data to update the song
+update_data = {
+    "username": "john_doe",
+    "password": "password123"
+    # Add other attributes to update as needed
+}
+
+# Make a PATCH or PUT request
+response = requests.patch(api_url, json=update_data)  # Use 'put' for a PUT request
+
+# Check the response
+if response.status_code == 200:
+    print("User logged out successfully")
+    print(response.json())
+    data = api_query(endpoint, "/users/1")
+    print(data)
+elif response.status_code == 404:
+    print("Song not found")
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+# SQL Queries
+
+1. What is the description for Bruno Mars?
+```{python}
+
+my_sql_wrapper("""
+SELECT description
+FROM artist
+WHERE name = 'Bruno Mars';
+""")
+
+```
+
+2. What are the name of the every album by Bruno Mars?
+
+```{python}
+
+my_sql_wrapper("""
+SELECT album.name AS album_name
+FROM album
+JOIN artist ON album.artist_ID = artist.ID
+WHERE artist.name = 'Bruno Mars';
+""")
+
+```
+
+3. What is the account type for the user, music_lover?
+
+```{python}
+
+my_sql_wrapper("""
+SELECT account_type
+FROM user
+WHERE user_name = 'music_lover';
+""")
+
+```
+
+4. What is the user ID for the username music_lover? 
+
+```{python}
+
+my_sql_wrapper("""
+SELECT ID AS user_id
+FROM user
+WHERE user_name = 'music_lover';
+""")
+
+```
+
+5. What is the password for the user music_lover?
+
+```{python}
+
+
+my_sql_wrapper("""
+SELECT password
+FROM user
+WHERE user_name = 'music_lover';
+""")
+
+```
+
+6. What are the names of every playlist created by music_lover?
+
+```{python}
+
+my_sql_wrapper("""
+SELECT name AS playlist_name
+FROM playlist
+JOIN user ON playlist.user_ID = user.ID
+WHERE user.user_name = 'music_lover';
+""")
+
+```
+
+7. What is the tempo of ‘Too Good to Say Goodbye’ from the ‘24K Magic’ album?
+
+```{python}
+
+my_sql_wrapper("""
+SELECT s.tempo
+FROM song s
+JOIN album a ON s.album_ID = a.ID
+WHERE s.name = 'Too Good to Say Goodbye' AND a.name = '24K Magic';
+""")
+
+```
+
+8. What are all songs in the key of C with the tempo of 120 bpm?
+
+```{python}
+
+my_sql_wrapper("""
+SELECT name AS song_name
+FROM song
+WHERE song_key = 'C' AND tempo = 120;
+""")
+
+```
+
+9. What is the birthdate and debut date of Alicia Keys?
+
+```{python}
+
+my_sql_wrapper("""
+SELECT birth_date, debut_date
+FROM artist
+WHERE name = 'Alicia Keys';
+""")
+
+```
+
+10. Find artists who have a debut date after 2000 and have released albums in the ‘Pop’ genre.
+
+```{python}
+
+my_sql_wrapper("""
+SELECT DISTINCT artist.name AS artist_name
+FROM artist
+JOIN album ON artist.ID = album.artist_ID
+WHERE artist.debut_date > '2000-01-01'
+AND album.genre = 'Pop';
+""")
+
+```
+
+11. Which artists have more than 1 million plays on their songs.
+
+```{python}
+
+my_sql_wrapper("""
+SELECT artist.name AS artist_name
+FROM artist
+JOIN song ON artist.ID = song.artist_ID
+WHERE song.plays > 1000000;
+""")
+```
+
+12. What is the classification of the album ‘Dark Side of the Moon’ by Pink Floyd?
+
+```{python}
+
+my_sql_wrapper("""
+SELECT classification
+FROM album
+JOIN artist ON album.artist_ID = artist.ID
+WHERE album.name = 'Dark Side of the Moon' AND artist.name = 'Pink Floyd';
+""")
+```
+
+13. What’s the follower count of Taylor Swift?
+
+```{python}
+
+my_sql_wrapper("""
+SELECT COUNT(DISTINCT follower_ID) AS follower_count
+FROM following
+JOIN artist ON following.following_ID = artist.ID
+WHERE artist.name = 'Taylor Swift';
+""")
+```
+
+14. What songs on user music_lover's "favorites" playlist were released this year?
+
+```{python}
+
+my_sql_wrapper("""
+SELECT song.name AS song_name
+FROM song
+JOIN album ON song.album_ID = album.ID
+JOIN playlist_song ON song.ID = playlist_song.song_ID
+JOIN playlist ON playlist_song.playlist_ID = playlist.ID
+JOIN user ON playlist.user_ID = user.ID
+WHERE user.user_name = 'music_lover' AND YEAR(album.release_date) = YEAR(CURRENT_DATE);
+""")
+```
+
+15. How many of user john_smith's followers do they follow back?
+
+```{python}
+
+my_sql_wrapper("""
+SELECT COUNT(*) AS follow_back
+FROM following AS f1
+JOIN following AS f2 ON f1.follower_ID = f2.following_ID AND f1.following_ID = f2.follower_ID
+WHERE f1.follower_ID = (SELECT ID FROM user WHERE user_name = 'john_smith');
+""")
+```
+
+16. What percentage of non-artist users have a premium account?
+
+```{python}
+
+my_sql_wrapper("""
+SELECT
+(COUNT(CASE WHEN 
+account_type = 'premium' THEN 1 END) / COUNT(*) * 100) AS premium_percentage
+FROM user
+WHERE account_type IN ('free', 'premium', 'artist') AND account_type <> 'artist';
+""")
+```
+
+17. How many artists have released music under the "Universal Music" record label?
+
+```{python}
+
+my_sql_wrapper("""
+SELECT COUNT(DISTINCT artist.ID) AS artist_count
+FROM artist
+JOIN album ON artist.ID = album.artist_ID
+WHERE album.record_label = 'Universal Music';
+""")
+```
+
+18. What is Beyonce's least popular song?
+
+```{python}
+
+my_sql_wrapper("""
+SELECT name AS least_popular_song
+FROM song
+WHERE artist_ID IN (SELECT ID FROM artist WHERE name = 'Beyonce')
+ORDER BY plays ASC
+LIMIT 1;
+""")
+```
+
+19. What's the longest jazz song?
+
+```{python}
+
+my_sql_wrapper("""
+SELECT
+song.name AS longest_jazz_song_name,
+song.duration AS longest_jazz_song_duration
+FROM song
+JOIN album ON song.album_ID = album.ID
+WHERE album.genre = 'jazz'
+ORDER BY song.duration DESC
+LIMIT 1;
+""")
+```
+
+20. How many songs feature Nicki Minaj?
+
+```{python}
+
+my_sql_wrapper("""
+SELECT
+SELECT COUNT(*) AS song_count
+FROM song
+JOIN artist ON song.artist_ID = artist.ID
+WHERE artist.name = 'Nicki Minaj';
+""")
+```
+
+# Reflection
+
+If I had more time, I would try to organize the code and files in a better way. Another thing that I am considering for the future is to create a website inspired by Spotify with our music database.
+
+The project was harder than I expected. Building the database took a lot more time than anticipated, so I wish we had more time or had learned the complexities earlier. I also found some aspects unclear during the database building, so I wish there were clearer instructions. Although I wanted to incorporate more queries, but we;re short on time so kept it simple. I believe our database aligns with initial plans, with may be a few minimal changes.
+
+# Deliverable 4
 
 # Problem Domain
 
@@ -636,277 +1367,11 @@ gantt
         Deliverable 7 : done, milestone, m1, 12-11, 12-11
 ```
 
+# Future considerations: 
 
-# Querying our API
-### Setting up the API Connection
-```{python}
-#| eval: true
-#| echo: false
-import os
-import requests
-from utils import hello_from_utils, api_call, api_query
+What needs to be done next to take your project to the next level? If you had more time, what would you do next?
 
-from IPython.display import display,Markdown,HTML
+# Reflections on the overall project: 
 
-endpoint = "http://localhost:5000"
+How did the project go? Did you achieve what you originally intended to build? If not, what kept you from achieving it?
 
-display(Markdown(f"""<div class="output">{hello_from_utils()}</div>"""))
-print(hello_from_utils())
-```
-
-Logging into an account:
-```{python}
-api_url = "http://localhost:5000/login"
-
-update_data = {
-    "username": "taylor_swift",
-    "password": "taylorpass1"
-}
-
-# Make a PATCH or PUT request
-response = requests.patch(api_url, json=update_data)  # Use 'put' for a PUT request
-
-# Check the response
-print("Logging in as free user")
-if response.status_code == 200:
-    print("User logged in successfully")
-    print(response.json())
-    myList = response.json().get('message').split()
-    myKey = myList[9]
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-```
-
-Viewing users
-```{python}  
-api_url1 = "http://localhost:5000/users"
-api_url2 = "http://localhost:5000/users?key=" + myKey
-api_url3 = "http://localhost:5000/users?key=" + myKey + "&account_type=free"
-api_url4 = "http://localhost:5000/users?key=badkey&account_type=premium"
-
-print("Get users with no key")
-response = requests.get(api_url1)
-# Check the response
-if response.status_code == 200:
-    print(response.json())  # Assuming the response is in JSON format
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-
-print("Get users with proper key")
-response = requests.get(api_url2)
-# Check the response
-if response.status_code == 200:
-    print(response.json())  # Assuming the response is in JSON format
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-
-print("Get users with proper key and filter")
-response = requests.get(api_url3)
-# Check the response
-if response.status_code == 200:
-    print(response.json())  # Assuming the response is in JSON format
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-
-print("Get users with improper key")
-response = requests.get(api_url4)
-# Check the response
-if response.status_code == 200:
-    print(response.json())  # Assuming the response is in JSON format
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-```
-
-Viewing users by ID
-```{python}  
-api_url1 = "http://localhost:5000/users/2?key=" + myKey
-api_url2 = "http://localhost:5000/users/25?key=" + myKey
-
-print("Get user with ID 2")
-response = requests.get(api_url1)
-# Check the response
-if response.status_code == 200:
-    print(response.json())  # Assuming the response is in JSON format
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-
-print("Get user with id 25")
-response = requests.get(api_url2)
-# Check the response
-if response.status_code == 200:
-    print(response.json())  # Assuming the response is in JSON format
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-```
-
-Viewing artists
-```{python}  
-api_url1 = "http://localhost:5000/artists?key=" + myKey
-api_url2 = "http://localhost:5000/artists?key=" + myKey + "&name=B"
-
-print("Getting artists with no filters")
-response = requests.get(api_url1)
-# Check the response
-if response.status_code == 200:
-    print(response.json())  # Assuming the response is in JSON format
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-
-print("Getting artists with filters")
-response = requests.get(api_url2)
-# Check the response
-if response.status_code == 200:
-    print(response.json())  # Assuming the response is in JSON format
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-```
-
-Creating a user:
-```{python}
-"""api_url = "http://localhost:5000/create_user"
-
-# Data to be sent in the POST request
-song_data1 = {
-    "user_name": "musical_musician_25",
-    "password": "abcde",
-}
-song_data2 = {
-    "user_name": "musical_musician_25",
-    "password": "abcde",
-    "account_type": "artist"
-}
-
-# Make a POST request
-response = requests.post(api_url, json=song_data1)
-# Check the response
-if response.status_code == 201:
-    print("Song added successfully")
-    print(response.json())  # Assuming the response is in JSON format
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-
-# Make a POST request
-response = requests.post(api_url, json=song_data2)
-# Check the response
-if response.status_code == 201:
-    print("Song added successfully")
-    print(response.json())  # Assuming the response is in JSON format
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-```
-
-
-Adding songs:
-```{python}
-api_url = "http://localhost:5000/add_song"
-
-# Data to be sent in the POST request
-song_data1 = {
-    "name": "New Song",
-    "tempo": 100,
-    "key": "C",
-    "plays": 100,
-    "duration": "3:30",
-    "album_id": 1,
-    "key": myKey
-}
-song_data2 = {
-    "name": "New Song 2",
-    "tempo": 100,
-    "key": "C",
-    "plays": 100,
-    "duration": "3:30",
-    "album_id": 2,
-    "key": myKey
-}
-
-print("Adding a song to album 1: 1989")
-response = requests.post(api_url, json=song_data1)
-# Check the response
-if response.status_code == 201:
-    print("Song added successfully")
-    print(response.json())  # Assuming the response is in JSON format
-    data = api_query(endpoint, "/songs?album=1989")
-    print(data)
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-
-print("Adding a song to album 2 will not work because album 2 is not our album")
-response = requests.post(api_url, json=song_data2)
-# Check the response
-if response.status_code == 201:
-    print("Song added successfully")
-    print(response.json())  # Assuming the response is in JSON format
-    data = api_query(endpoint, "/songs?album=1989")
-    print(data)
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-```
-
-Deleting a song:
-
-```{python}
-# Replace with the actual URL and song ID
-api_url = "http://localhost:5000/delete_song/481"
-
-# Make a DELETE request
-response = requests.delete(api_url)
-
-# Check the response
-if response.status_code == 204:
-    print("Song deleted successfully")
-    print(response.json())
-elif response.status_code == 404:
-    print("Song not found")
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-```
-
-```{python}
-api_url = "http://localhost:5000/update_song/481"
-
-# Data to update the song
-update_data = {
-    "key": "Em",
-    "tempo": "150"
-    # Add other attributes to update as needed
-}
-
-# Make a PATCH or PUT request
-response = requests.patch(api_url, json=update_data)  # Use 'put' for a PUT request
-
-# Check the response
-if response.status_code == 200:
-    print("Song updated successfully")
-    print(response.json())
-elif response.status_code == 404:
-    print("Song not found")
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-```
-
-Logging out of an account:
-```{python}
-api_url = "http://localhost:5000/logout"
-
-# Data to update the song
-update_data = {
-    "username": "john_doe",
-    "password": "password123"
-    # Add other attributes to update as needed
-}
-
-# Make a PATCH or PUT request
-response = requests.patch(api_url, json=update_data)  # Use 'put' for a PUT request
-
-# Check the response
-if response.status_code == 200:
-    print("User logged out successfully")
-    print(response.json())
-    data = api_query(endpoint, "/users/1")
-    print(data)
-elif response.status_code == 404:
-    print("Song not found")
-else:
-    print(f"Error: {response.status_code} - {response.text}")
-```

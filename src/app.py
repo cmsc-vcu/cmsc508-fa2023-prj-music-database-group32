@@ -435,7 +435,7 @@ def get_songs():
     artist_id_regex = request.args.get('artist_id')
     album_regex = request.args.get('album')
     album_id_regex = request.args.get('album_id')
-    user_key = request.args.get('key', None)
+    user_key = request.args.get('user_key', None)
     if(not user_key):
         return jsonify({'error': 'No key provided.'}), 400
     if(not testKey(user_key)):
@@ -480,7 +480,7 @@ def add_song():
     plays = data.get('plays', 0)
     duration = data.get('duration')
     album_ID = data.get('album_id')
-    user_key = data.get('key', None)
+    user_key = data.get('user_key', None)
     if(not user_key):
         return jsonify({'error': 'No key provided.'}), 400
     if(testKey(user_key) != 'artist'):
@@ -496,8 +496,10 @@ def add_song():
     query = text("SELECT artist.ID FROM artist JOIN user ON artist.user_ID=user.ID WHERE user.user_key = :user_key")
     result = db.session.execute(query, {'user_key': user_key})
     artist_ID = [{'ArtistID': artist.ID} for artist in result][0].get('ArtistID')
-    query = text("INSERT INTO song (name, tempo, song_key, plays, duration, artist_ID, album_ID) VALUES (:name, :tempo, :song_key, :plays, :duration, :artist_ID, :album_ID)")
-    db.session.execute(query, {'name': name, 'tempo': tempo, 'song_key': song_key, 'plays': plays, 'duration': duration, 'user_key': user_key, 'album_ID': album_ID})
+    artist_ID = 1
+    print("ARTIST ID = ", artist_ID)
+    query = text("INSERT INTO song (name, tempo, song_key, plays, duration, artist_ID, album_ID) VALUES (:name, :tempo, :song_key, :plays, :duration, :artist_ID, :album_ID);")
+    db.session.execute(query, {'name': name, 'tempo': tempo, 'song_key': song_key, 'plays': plays, 'duration': duration, 'artist_ID': artist_ID, 'album_ID': album_ID})
     db.session.commit()
     query = text("SELECT MAX(ID) AS ID FROM song")
     result = db.session.execute(query)
@@ -513,7 +515,7 @@ def delete_song(song_id):
     if(testKey(user_key) != 'artist'):
         print(testKey(user_key))
         return jsonify({'error': 'Invalid key.'}), 400
-    query = text("SELECT name FROM song JOIN artist ON song.artist_id=artist.id JOIN user ON artist.user_id=user.id WHERE song.ID = :song_id AND user.user_key = :user_key;")
+    query = text("SELECT song.name FROM song JOIN artist ON song.artist_ID=artist.ID JOIN user ON artist.user_ID=user.ID WHERE song.ID = :song_id AND user.user_key = :user_key;")
     song_data = testExecution(db.session.execute(query, {'song_id': song_id, 'user_key': user_key}))
     if(not song_data):
         return jsonify({'error': 'Song does not exist or cannot be deleted.'}), 404
@@ -527,8 +529,8 @@ def delete_song(song_id):
         result = f"Error: {str(e)}"
     if result:
         return jsonify({'error': 'Invalid URL'}), 404
-    result = "Song" + song_id + "has been deleted."
-    return jsonify(message=result), 204
+    result = "Song " + str(song_id) + " has been deleted."
+    return jsonify(message=result), 201
 
 @app.route('/update_song/<int:song_id>', methods=['PUT', 'PATCH'])
 def update_song(song_id):
@@ -540,7 +542,7 @@ def update_song(song_id):
     plays = data.get('plays', None)
     duration = data.get('duration', None)
     album_ID = data.get('album_id', None)
-    user_key = data.get('key', None)
+    user_key = data.get('user_key', None)
     if(not user_key):
         return jsonify({'error': 'No key provided.'}), 400
     if(testKey(user_key) != 'artist'):
@@ -548,12 +550,12 @@ def update_song(song_id):
         return jsonify({'error': 'Invalid key.'}), 400
     if not name and not tempo and not song_key and not plays and not duration and not album_ID:
         return jsonify({'error': 'No values provided to update)'}), 400
-    query = text("SELECT name FROM song JOIN artist ON song.artist_ID=artist.ID JOIN user ON artist.user_ID=user.ID WHERE song.ID = :song_ID AND user.user_key = :user_key;")
+    query = text("SELECT song.name FROM song JOIN artist ON song.artist_ID=artist.ID JOIN user ON artist.user_ID=user.ID WHERE song.ID = :song_ID AND user.user_key = :user_key;")
     song_data = testExecution(db.session.execute(query, {'song_ID': song_id, 'user_key': user_key}))
     if(not song_data):
         return jsonify({'error': 'Song does not exist or cannot be deleted.'}), 404
     if(album_ID):
-        query = text("SELECT name FROM user JOIN artist ON user.ID=artist.user_ID JOIN album ON album.artist_ID=artist_ID WHERE album.ID=:album_ID AND user.user_key = :user_key;")
+        query = text("SELECT name FROM user JOIN artist ON user.ID=artist.user_ID JOIN album ON album.artist_ID=artist.ID WHERE album.ID=:album_ID AND user.user_key = :user_key;")
         song_data = testExecution(db.session.execute(query, {'album_ID': album_ID, 'user_key': user_key}))
         if(not song_data):
             return jsonify({'error': 'Song''s album id cannot be changed to the given album id.'}), 404

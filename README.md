@@ -1,5 +1,5 @@
 ---
-date: 10/15/2023
+date: 12/12/2023
 author: Rachel Farzan, Javeria Hanif, Feyza Sakin
 format:
     html:
@@ -42,10 +42,10 @@ To render the Deliverable4.qmd file into Deliverable4.html file, “quarto rende
 
 [Deliverable 4 Video](https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+4/1_xyo18fcy)
 
-[Deliverable 7 Video]()
+[Deliverable 7 Video](https://vcu.mediaspace.kaltura.com/media/Deliverable+7/1_w9v8u66l)
 
 ### HTML Documents
 
 [Deliverable 4 HTML](https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32/blob/main/reports/Deliverable4.html)
 
-[Deliverable 7 HTML]()
+[Deliverable 7 HTML](https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32/blob/main/reports/Deliverable7.html)
