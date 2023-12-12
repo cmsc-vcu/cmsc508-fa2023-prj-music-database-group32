@@ -83,10 +83,10 @@ def testExecution(executionResult):
 def testKey(user_key):
     query = text("SELECT account_type FROM user WHERE user_key = :user_key;")
     result = db.session.execute(query, {'user_key': user_key})
-    user_data = [{'user_key': user.user_key} for user in result]
+    user_data = [{'account_type': user.account_type} for user in result]
     if(not user_data):
         return 0
-    return user_data[0].get('user_key')
+    return user_data[0].get('account_type')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{config['user']}:{config['password']}@{config['host']}/{config['database']}"
@@ -116,7 +116,7 @@ def login():
     query = text("UPDATE user SET user_key = :user_key WHERE (user_name = :user_name OR id = :id) AND password = :password;")
     db.session.execute(query, {'user_key': user_key,'user_name': user_name, 'id': id, 'password': password})
     db.session.commit()
-    myMessage = "You are now logged in. Your user key is " + str(user_key) + ", which you must use to access the database."
+    myMessage = "You are now logged in. Your user key is " + str(user_key) + " , which you must use to access the database."
     return jsonify(message=myMessage), 200
 
 @app.route('/logout', methods=['PUT', 'PATCH'])
@@ -145,18 +145,19 @@ def logout():
 # Show users (with filter)
 @app.route('/users', methods=['GET'])
 def get_users():
-    username_regex = request.args.get('username')
-    account_type_regex = request.args.get('account_type')
-    user_key = request.args.get('key')
+    username_regex = request.args.get('username', None)
+    account_type_regex = request.args.get('account_type', None)
+    user_key = request.args.get('key', None)
     if(not user_key):
         return jsonify({'error': 'No key provided.'}), 400
     if(not testKey(user_key)):
+        print(testKey(user_key))
         return jsonify({'error': 'Invalid key.'}), 400
-    query = text("SELECT user_name, account_type FROM user WHERE"
+    query = text("SELECT ID, user_name, account_type FROM user WHERE"
                  "(user.user_name REGEXP :username_regex OR :username_regex IS NULL) AND"
                  "(user.account_type REGEXP :account_type_regex OR :account_type_regex IS NULL);")
     result = db.session.execute(query, {'username_regex': username_regex,'account_type_regex': account_type_regex})
-    user_list = [{'Username': user.user_name, 'Account type': user.account_type} for user in result]
+    user_list = [{'ID': user.ID, 'Username': user.user_name, 'Account type': user.account_type} for user in result]
     if(user_list):
         return jsonify(user_list), 200
     return jsonify({'error': 'No users fulfill this criteria.'}), 404
@@ -164,7 +165,13 @@ def get_users():
 # Find user by id
 @app.route('/users/<int:user_id>', methods=['GET'])
 def get_user_by_id(user_id):
-    query = text("SELECT user_name, account_type FROM user WHERE id = :user_id;")
+    user_key = request.args.get('key', None)
+    if(not user_key):
+        return jsonify({'error': 'No key provided.'}), 400
+    if(not testKey(user_key)):
+        print(testKey(user_key))
+        return jsonify({'error': 'Invalid key.'}), 400
+    query = text("SELECT ID, user_name, account_type FROM user WHERE id = :user_id;")
     user_list = testExecution(db.session.execute(query, {'user_id': user_id}))
     if(user_list):
         return jsonify(user=user_list)
@@ -174,22 +181,33 @@ def get_user_by_id(user_id):
 
 @app.route('/artists', methods=['GET'])
 def get_artists():
-    query = text("SELECT * FROM artist;")
-    artist_list = testExecution(db.session.execute(query))
-    print(artist_list)
-    if(artist_list):
-        return jsonify(artists=artist_list)
-    return jsonify(message='No artists have been added.'), 404
+    name_regex = request.args.get('name', None)
+    birth_date_regex = request.args.get('birth_date', None)
+    debut_date_regex = request.args.get('debut_date', None)
+    user_key = request.args.get('key', None)
+    if(not user_key):
+        return jsonify({'error': 'No key provided.'}), 400
+    if(not testKey(user_key)):
+        print(testKey(user_key))
+        return jsonify({'error': 'Invalid key.'}), 400
+    query = text("SELECT ID, name, DATE_FORMAT(birth_date, '%M %D, %Y') AS birth_date, DATE_FORMAT(debut_date, '%M %D, %Y') AS debut_date, description, user_ID FROM artist WHERE"
+                 "(artist.name REGEXP :name_regex OR :name_regex IS NULL) AND"
+                 "(artist.birth_date REGEXP :birth_date_regex OR :birth_date_regex IS NULL);")
+    result = db.session.execute(query, {'name_regex': name_regex,'birth_date_regex': birth_date_regex, 'debut_date_regex': debut_date_regex})
+    user_list = [{'ID': artist.ID, 'Name': artist.name, 'Birth date': artist.birth_date, 'Description': artist.description, 'Debut date': artist.debut_date, 'User ID': artist.user_ID} for artist in result]
+    if(user_list):
+        return jsonify(user_list), 200
+    return jsonify({'error': 'No users fulfill this criteria.'}), 404
 
 # Create a user with the given name, password, and the account type
 # If the user exists with the given user name, then return error
 @app.route('/create_user', methods=['POST'])
 def create_user():
-    
     # Get the new user's name, password, and account type from the request
-    user_name = request.json['user_name']
-    user_password = request.json['password'];
-    user_account_type = request.json['account_type'];
+    data = request.json
+    user_name = data.get('user_name', None)
+    user_password = data.get('password', None)
+    user_account_type = data.get('account_type', None)
 
     # If the request has name, password, and the account type for the user:
     # Check if there's already a user with the given name.
@@ -197,10 +215,11 @@ def create_user():
     if user_name and user_password and user_account_type:
 
         # Check if there's any user with the asked name and set it to "database_user"
-        database_user = db.session.execute(text("SELECT * FROM user WHERE user_name = :user_name"), {"user_name": user_name}).fetchone();
+        result = db.session.execute(text("SELECT * FROM user WHERE user_name = :user_name"), {"user_name": user_name}).fetchone();
+        user_data = [{'user_name': user.user_name} for user in result]
         
         # If the user already exists, print a message to user to try different name
-        if database_user:
+        if user_data:
             return jsonify({'message': 'A user with the given name already exists. Please try a different name.'});
         
         # If a user doesn't exist with the given name, then create it
@@ -416,6 +435,12 @@ def get_songs():
     artist_id_regex = request.args.get('artist_id')
     album_regex = request.args.get('album')
     album_id_regex = request.args.get('album_id')
+    user_key = request.args.get('key', None)
+    if(not user_key):
+        return jsonify({'error': 'No key provided.'}), 400
+    if(not testKey(user_key)):
+        print(testKey(user_key))
+        return jsonify({'error': 'Invalid key.'}), 400
     query = text("SELECT song.ID, song.name, tempo, song_key, plays, TIME_FORMAT(song.duration, '%H:%i') AS duration, song.artist_ID, artist.name AS artist_name, album_ID, album.name AS album_name FROM song JOIN artist ON song.artist_ID = artist.ID JOIN album ON song.album_ID = album.ID WHERE"
                  "(song.name REGEXP :name_regex OR :name_regex IS NULL) AND"
                  "(song.tempo REGEXP :tempo_regex OR :tempo_regex IS NULL) AND"
@@ -434,6 +459,12 @@ def get_songs():
 
 @app.route('/songs/<int:song_id>', methods=['GET'])
 def get_song_by_id(song_id):
+    user_key = request.args.get('key', None)
+    if(not user_key):
+        return jsonify({'error': 'No key provided.'}), 400
+    if(not testKey(user_key)):
+        print(testKey(user_key))
+        return jsonify({'error': 'Invalid key.'}), 400
     query = text("SELECT ID, name, tempo, song_key, plays, TIME_FORMAT(duration, '%H:%i') AS duration, artist_ID, album_ID FROM song WHERE id = :song_id;")
     song_list = testExecution(db.session.execute(query, {'song_id': song_id}))
     if(song_list):
@@ -448,12 +479,25 @@ def add_song():
     song_key = data.get('key', None)
     plays = data.get('plays', 0)
     duration = data.get('duration')
-    artist_ID = data.get('artist_id') # when user keys are added, replace this with user key verification (if key is artist key, add song for that artist. Album must also be by that artist)
     album_ID = data.get('album_id')
-    if not name or not duration or not artist_ID or not album_ID:
-        return jsonify({'error': 'Missing required fields for adding a song (name, duration, artist_id, album_id)'}), 400
+    user_key = data.get('key', None)
+    if(not user_key):
+        return jsonify({'error': 'No key provided.'}), 400
+    if(testKey(user_key) != 'artist'):
+        print(testKey(user_key))
+        return jsonify({'error': 'Invalid key.'}), 400
+    if not name or not duration or not album_ID:
+        return jsonify({'error': 'Missing required fields for adding a song (name, duration, album_id)'}), 400
+    if(album_ID):
+        query = text("SELECT album.name FROM user JOIN artist ON user.ID=artist.user_ID JOIN album ON album.artist_ID=artist_ID WHERE album.ID=:album_ID AND user.user_key = :user_key;")
+        song_data = testExecution(db.session.execute(query, {'album_ID': album_ID, 'user_key': user_key}))
+        if(not song_data):
+            return jsonify({'error': 'Song''s album id cannot be changed to the given album id.'}), 404
+    query = text("SELECT artist.ID FROM artist JOIN user ON artist.user_ID=user.ID WHERE user.user_key = :user_key")
+    result = db.session.execute(query, {'user_key': user_key})
+    artist_ID = [{'ArtistID': artist.ID} for artist in result][0].get('ArtistID')
     query = text("INSERT INTO song (name, tempo, song_key, plays, duration, artist_ID, album_ID) VALUES (:name, :tempo, :song_key, :plays, :duration, :artist_ID, :album_ID)")
-    db.session.execute(query, {'name': name, 'tempo': tempo, 'song_key': song_key, 'plays': plays, 'duration': duration, 'artist_ID': artist_ID, 'album_ID': album_ID})
+    db.session.execute(query, {'name': name, 'tempo': tempo, 'song_key': song_key, 'plays': plays, 'duration': duration, 'user_key': user_key, 'album_ID': album_ID})
     db.session.commit()
     query = text("SELECT MAX(ID) AS ID FROM song")
     result = db.session.execute(query)
@@ -463,10 +507,16 @@ def add_song():
 
 @app.route('/delete_song/<int:song_id>', methods=['DELETE'])
 def delete_song(song_id):
-    query = text("SELECT name FROM song WHERE ID = :song_id;")
-    song_data = testExecution(db.session.execute(query, {'song_id': song_id}))
+    user_key = request.args.get('key', None)
+    if(not user_key):
+        return jsonify({'error': 'No key provided.'}), 400
+    if(testKey(user_key) != 'artist'):
+        print(testKey(user_key))
+        return jsonify({'error': 'Invalid key.'}), 400
+    query = text("SELECT name FROM song JOIN artist ON song.artist_id=artist.id JOIN user ON artist.user_id=user.id WHERE song.ID = :song_id AND user.user_key = :user_key;")
+    song_data = testExecution(db.session.execute(query, {'song_id': song_id, 'user_key': user_key}))
     if(not song_data):
-        return jsonify({'error': 'Song not found.'}), 404
+        return jsonify({'error': 'Song does not exist or cannot be deleted.'}), 404
     query = text("DELETE FROM song WHERE ID = :song_id;")
     try:
         with conn.begin() as x:
@@ -489,17 +539,30 @@ def update_song(song_id):
     song_key = data.get('key', None)
     plays = data.get('plays', None)
     duration = data.get('duration', None)
-    artist_ID = data.get('artist_id', None) # when user keys are added, replace this with user key verification (if key is artist key, add song for that artist. Album must also be by that artist)
     album_ID = data.get('album_id', None)
-    if not name and not tempo and not song_key and not plays and not duration and not artist_ID and not album_ID:
+    user_key = data.get('key', None)
+    if(not user_key):
+        return jsonify({'error': 'No key provided.'}), 400
+    if(testKey(user_key) != 'artist'):
+        print(testKey(user_key))
+        return jsonify({'error': 'Invalid key.'}), 400
+    if not name and not tempo and not song_key and not plays and not duration and not album_ID:
         return jsonify({'error': 'No values provided to update)'}), 400
+    query = text("SELECT name FROM song JOIN artist ON song.artist_ID=artist.ID JOIN user ON artist.user_ID=user.ID WHERE song.ID = :song_ID AND user.user_key = :user_key;")
+    song_data = testExecution(db.session.execute(query, {'song_ID': song_id, 'user_key': user_key}))
+    if(not song_data):
+        return jsonify({'error': 'Song does not exist or cannot be deleted.'}), 404
+    if(album_ID):
+        query = text("SELECT name FROM user JOIN artist ON user.ID=artist.user_ID JOIN album ON album.artist_ID=artist_ID WHERE album.ID=:album_ID AND user.user_key = :user_key;")
+        song_data = testExecution(db.session.execute(query, {'album_ID': album_ID, 'user_key': user_key}))
+        if(not song_data):
+            return jsonify({'error': 'Song''s album id cannot be changed to the given album id.'}), 404
     query = text("UPDATE song SET "
                  "name = CASE WHEN :name is NULL THEN name ELSE :name END,"
                  "tempo = CASE WHEN :tempo is NULL THEN tempo ELSE :tempo END,"
                  "song_key = CASE WHEN :song_key is NULL THEN song_key ELSE :song_key END,"
                  "plays = CASE WHEN :plays is NULL THEN plays ELSE :plays END,"
                  "duration = CASE WHEN :duration is NULL THEN duration ELSE :duration END,"
-                 "artist_ID = CASE WHEN :artist_ID is NULL THEN artist_ID ELSE :artist_ID END,"
                  "album_ID = CASE WHEN :album_ID is NULL THEN album_ID ELSE :album_ID END "
                  "WHERE ID = :song_id;")
     db.session.execute(query, {'name': name, 'tempo': tempo, 'song_key': song_key, 'plays': plays, 'duration': duration, 'artist_ID': artist_ID, 'album_ID': album_ID, 'song_id': song_id})

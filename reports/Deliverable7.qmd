@@ -636,3 +636,277 @@ gantt
         Deliverable 7 : done, milestone, m1, 12-11, 12-11
 ```
 
+
+# Querying our API
+### Setting up the API Connection
+```{python}
+#| eval: true
+#| echo: false
+import os
+import requests
+from utils import hello_from_utils, api_call, api_query
+
+from IPython.display import display,Markdown,HTML
+
+endpoint = "http://localhost:5000"
+
+display(Markdown(f"""<div class="output">{hello_from_utils()}</div>"""))
+print(hello_from_utils())
+```
+
+Logging into an account:
+```{python}
+api_url = "http://localhost:5000/login"
+
+update_data = {
+    "username": "taylor_swift",
+    "password": "taylorpass1"
+}
+
+# Make a PATCH or PUT request
+response = requests.patch(api_url, json=update_data)  # Use 'put' for a PUT request
+
+# Check the response
+print("Logging in as free user")
+if response.status_code == 200:
+    print("User logged in successfully")
+    print(response.json())
+    myList = response.json().get('message').split()
+    myKey = myList[9]
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+Viewing users
+```{python}  
+api_url1 = "http://localhost:5000/users"
+api_url2 = "http://localhost:5000/users?key=" + myKey
+api_url3 = "http://localhost:5000/users?key=" + myKey + "&account_type=free"
+api_url4 = "http://localhost:5000/users?key=badkey&account_type=premium"
+
+print("Get users with no key")
+response = requests.get(api_url1)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("Get users with proper key")
+response = requests.get(api_url2)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("Get users with proper key and filter")
+response = requests.get(api_url3)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("Get users with improper key")
+response = requests.get(api_url4)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+Viewing users by ID
+```{python}  
+api_url1 = "http://localhost:5000/users/2?key=" + myKey
+api_url2 = "http://localhost:5000/users/25?key=" + myKey
+
+print("Get user with ID 2")
+response = requests.get(api_url1)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("Get user with id 25")
+response = requests.get(api_url2)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+Viewing artists
+```{python}  
+api_url1 = "http://localhost:5000/artists?key=" + myKey
+api_url2 = "http://localhost:5000/artists?key=" + myKey + "&name=B"
+
+print("Getting artists with no filters")
+response = requests.get(api_url1)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("Getting artists with filters")
+response = requests.get(api_url2)
+# Check the response
+if response.status_code == 200:
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+Creating a user:
+```{python}
+"""api_url = "http://localhost:5000/create_user"
+
+# Data to be sent in the POST request
+song_data1 = {
+    "user_name": "musical_musician_25",
+    "password": "abcde",
+}
+song_data2 = {
+    "user_name": "musical_musician_25",
+    "password": "abcde",
+    "account_type": "artist"
+}
+
+# Make a POST request
+response = requests.post(api_url, json=song_data1)
+# Check the response
+if response.status_code == 201:
+    print("Song added successfully")
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+# Make a POST request
+response = requests.post(api_url, json=song_data2)
+# Check the response
+if response.status_code == 201:
+    print("Song added successfully")
+    print(response.json())  # Assuming the response is in JSON format
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+
+Adding songs:
+```{python}
+api_url = "http://localhost:5000/add_song"
+
+# Data to be sent in the POST request
+song_data1 = {
+    "name": "New Song",
+    "tempo": 100,
+    "key": "C",
+    "plays": 100,
+    "duration": "3:30",
+    "album_id": 1,
+    "key": myKey
+}
+song_data2 = {
+    "name": "New Song 2",
+    "tempo": 100,
+    "key": "C",
+    "plays": 100,
+    "duration": "3:30",
+    "album_id": 2,
+    "key": myKey
+}
+
+print("Adding a song to album 1: 1989")
+response = requests.post(api_url, json=song_data1)
+# Check the response
+if response.status_code == 201:
+    print("Song added successfully")
+    print(response.json())  # Assuming the response is in JSON format
+    data = api_query(endpoint, "/songs?album=1989")
+    print(data)
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+
+print("Adding a song to album 2 will not work because album 2 is not our album")
+response = requests.post(api_url, json=song_data2)
+# Check the response
+if response.status_code == 201:
+    print("Song added successfully")
+    print(response.json())  # Assuming the response is in JSON format
+    data = api_query(endpoint, "/songs?album=1989")
+    print(data)
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+Deleting a song:
+
+```{python}
+# Replace with the actual URL and song ID
+api_url = "http://localhost:5000/delete_song/481"
+
+# Make a DELETE request
+response = requests.delete(api_url)
+
+# Check the response
+if response.status_code == 204:
+    print("Song deleted successfully")
+    print(response.json())
+elif response.status_code == 404:
+    print("Song not found")
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+```{python}
+api_url = "http://localhost:5000/update_song/481"
+
+# Data to update the song
+update_data = {
+    "key": "Em",
+    "tempo": "150"
+    # Add other attributes to update as needed
+}
+
+# Make a PATCH or PUT request
+response = requests.patch(api_url, json=update_data)  # Use 'put' for a PUT request
+
+# Check the response
+if response.status_code == 200:
+    print("Song updated successfully")
+    print(response.json())
+elif response.status_code == 404:
+    print("Song not found")
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+
+Logging out of an account:
+```{python}
+api_url = "http://localhost:5000/logout"
+
+# Data to update the song
+update_data = {
+    "username": "john_doe",
+    "password": "password123"
+    # Add other attributes to update as needed
+}
+
+# Make a PATCH or PUT request
+response = requests.patch(api_url, json=update_data)  # Use 'put' for a PUT request
+
+# Check the response
+if response.status_code == 200:
+    print("User logged out successfully")
+    print(response.json())
+    data = api_query(endpoint, "/users/1")
+    print(data)
+elif response.status_code == 404:
+    print("Song not found")
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
