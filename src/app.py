@@ -122,22 +122,20 @@ def login():
 @app.route('/logout', methods=['PUT', 'PATCH'])
 def logout():
     data = request.json
-    id = data.get('id')
-    user_name = data.get('username')
-    password = data.get('password')
-    if(not id and not user_name):
-        return jsonify({'error': 'Missing username or id.'}), 400
-    if(not password):
-        return jsonify({'error': 'Missing password.'}), 400
-    query = text("SELECT * FROM user WHERE (user_name = :user_name OR id = :id) AND password = :password;")
-    result = db.session.execute(query, {'user_name': user_name, 'id': id, 'password': password})
-    user_data = [{'user_key': user.user_key} for user in result]
-    if(not user_data):
-        return jsonify({'error': 'Incorrect login credentials.'}), 400
-    if(not user_data[0].get('user_key')):
-        return jsonify({'error': 'You''re already logged out.'}), 400
-    query = text("UPDATE user SET user_key = NULL WHERE (user_name = :user_name OR id = :id) AND password = :password;")
-    db.session.execute(query, {'user_name': user_name, 'id': id, 'password': password})
+    #id = data.get('id')
+    #user_name = data.get('username')
+    #password = data.get('password')
+    #if(not id and not user_name):
+        #return jsonify({'error': 'Missing username or id.'}), 400
+    #if(not password):
+        #return jsonify({'error': 'Missing password.'}), 400
+    user_key = data.get('key')
+    if(not user_key):
+        return jsonify({'error': 'No key provided.'}), 400
+    if(not testKey(user_key)):
+        return jsonify({'error': 'Invalid key, or invalid key.'}), 400
+    query = text("UPDATE user SET user_key = NULL WHERE user_key = :user_key;")
+    db.session.execute(query, {'user_key': user_key})
     db.session.commit()
     myMessage = "You are now logged out."
     return jsonify(message=myMessage), 200

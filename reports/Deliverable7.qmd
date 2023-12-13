@@ -786,9 +786,7 @@ api_url = "http://localhost:5000/logout"
 
 # Data to update the song
 update_data = {
-    "username": "john_doe",
-    "password": "password123"
-    # Add other attributes to update as needed
+    "key": myKey
 }
 
 # Make a PATCH or PUT request
@@ -798,8 +796,6 @@ response = requests.patch(api_url, json=update_data)  # Use 'put' for a PUT requ
 if response.status_code == 200:
     print("User logged out successfully")
     print(response.json())
-    data = api_query(endpoint, "/users/1")
-    print(data)
 elif response.status_code == 404:
     print("Song not found")
 else:
