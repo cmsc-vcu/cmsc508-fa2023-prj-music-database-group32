@@ -66,7 +66,7 @@ from sqlalchemy.exc import ArgumentError, NoSuchModuleError
 from IPython.display import display, Markdown
 import requests
 from utils import hello_from_utils, api_call, api_query
-
+from datetime import datetime
 from IPython.display import display,Markdown,HTML
 
 endpoint = "http://localhost:5000"
@@ -594,6 +594,190 @@ else:
     print(f"Error: {response.status_code} - {response.text}")
 ```
 
+### Create User API calls
+```{python}
+print("Creating a user:")
+# Define the API endpoint
+create_user_api_url = "http://localhost:5000/create_user"
+
+# User name, password, and account_type to create a new user
+user_name = "FSakin"
+password = "new_user_API_call"  
+account_type = "free"
+
+# New User's info
+create_user_new_user = {
+    "user_name": user_name,
+    "password": password,
+    "account_type": account_type
+}
+
+# Make a request to the create_user endpoint to create a new user called "FSakin" with "new_user_API_call" password and account_type as "free"
+create_user_response = requests.post(create_user_api_url, json=create_user_new_user)
+
+# Get a response from the endpoint if the user is created successfully
+if create_user_response.status_code == 200:
+    print(create_user_response.json());  
+else:
+   print(f"Error: {create_user_response.status_code} - {create_user_response.text}")
+```
+
+### Create Artist API Calls
+```{python}
+print("Creating an artist:")
+# URLs to create an artist
+create_artist_api_url = "http://localhost:5000/create_artist"
+
+# Artist name, birth_date, debut_date, description, and user_ID to create a new artist using Taylor Swift's User ID
+artist_name = "API_artist_(Taylor_Swifts_Version)";
+artist_birth_date = "2023-01-01";
+artist_debut_date = "2023-12-11";
+artist_description = "An API artist created for a call";
+artist_user_ID = 4;
+
+# New Artist's Info
+create_new_artist_info = {
+    "name": artist_name,
+    "birth_date": artist_birth_date,
+    "debut_date": artist_debut_date,
+    "description": artist_description,
+    "user_ID": artist_user_ID
+}
+
+# Make a request to the create_artist endpoint to create a new artist
+create_artist_response = requests.post(create_artist_api_url, json=create_new_artist_info);
+
+# Get a response from the endpoint if the artist is created successfully
+if create_artist_response.status_code == 200:
+    print(create_artist_response.json())
+else:
+    print(f"Error: {create_artist_response.status_code} - {create_artist_response.text}")
+
+```
+
+### Get an artist w an ID
+```{python}
+print("Getting an artist:")
+
+# The URL to find the artist with 1 as their ID
+get_artistByID_api_url = "http://localhost:5000/artists/1"
+
+# Add key to the URL 
+get_artistByID_with_key = get_artistByID_api_url + "?key=myKey"
+
+# Send a request to the URL to get the artist with 1 as their ID
+get_artistByID_response_with_key = requests.get(get_artistByID_with_key)
+
+# Get a response from the endpoint if the artist is shown w their ID
+if get_artistByID_response_with_key.status_code == 200:
+    print(get_artistByID_response_with_key.json())
+else:
+    print(f"Error: {get_artistByID_response_with_key.status_code} - {get_artistByID_response_with_key.text}")
+```
+
+### Update the user
+```{python}
+print("Updating a user:")
+# The URL to update the user with 2 ID 
+update_user_api_url = "http://localhost:5000/update_user/2"
+
+# The URL with the key
+update_user_with_key = update_user_api_url + "?key=myKey"
+
+# Updated information on the user
+updated_user_name = "updated_name_with_API";
+updated_password = "API_update_user";
+updated_account_type = "premium";
+
+# User details to update the user
+updated_info = {
+    "user_name": updated_user_name,
+    "password": updated_password,
+    "account_type": updated_account_type
+}
+
+# Send a request to the endpoint to make changes for the user with 2 as ID
+update_user_response = requests.put(update_user_with_key, json=updated_info)
+
+# If the update is done successfully, get a success message
+if update_user_response.status_code == 200:
+    print(update_user_response.json())
+else:
+    print(f"Error: {update_user_response.status_code} - {update_user_response.text}")
+```
+
+### Update artist
+```{python}
+print("Updating an artist:")
+# The URL to update the artist with 2 as their ID
+update_artist_api_url = "http://localhost:5000/update_artist/1"
+
+# The URL with the key
+update_artist_with_key = update_artist_api_url + "?key=myKey"
+
+# Update informations
+updated_artist_name = "updated_artist_name_with_API";
+updated_artist_birth_date = "1995-05-05"
+updated_artist_description = "Updated description using an API call",
+updated_artist_debut_date = "2000-01-01", 
+updated_artist_userID = 4 
+
+# Artist with updated info
+updated_artist_details = {
+    "name": updated_artist_name,
+    "birth_date": updated_artist_birth_date,
+    "description": updated_artist_description,
+    "debut_date": updated_artist_debut_date,
+    "user_ID": updated_artist_userID
+}
+
+# Send a request to the endpoint to change information for the artist with 2 as ID
+update_artist_response = requests.put(update_artist_with_key, json=updated_artist_details)
+
+# Get a success response if the request is done successfully
+if update_artist_response.status_code == 200:
+    print(update_artist_response.json())
+else:
+    print(f"Error: {update_artist_response.status_code} - {update_artist_response.text}")
+```
+
+### Delete a user
+```{python}
+print("Delete a user:")
+# The URL to delete the user with 51 as their ID
+delete_user_api_url = "http://localhost:5000/delete_user/1"
+
+# URL with the key
+delete_user_with_key = delete_user_api_url + "?key=myKey"
+
+# Send a request to the endpoint to delete the user with 1 as their ID
+delete_user_response_with_key = requests.delete(delete_user_with_key)
+
+# Get a response from the endpoint if the user w 1 as their ID is deleted
+if delete_user_response_with_key.status_code == 200:
+    print(delete_user_response_with_key.json())
+else:
+    print(f"Error: {delete_user_response_with_key.status_code} - {delete_user_response_with_key.text}")
+```
+
+### Delete artist w 1 as their artist_ID
+```{python}
+print("Deleting an artist:")
+# The URL to delete the artist with 1 as their ID
+delete_artist_api_url = "http://localhost:5000/delete_artist/1"
+
+# The URL with the key
+delete_artist_with_key = delete_artist_api_url + "?key=myKey"
+
+# Send a request to the endpoint to delete the artist with 1 as their ID
+delete_artist_response = requests.delete(delete_artist_with_key)
+
+# Get a response from the endpoint if the artist w 1 as their ID is 
+if delete_artist_response.status_code == 200:
+    print(delete_artist_response.json())
+else:
+    print(f"Error: {delete_artist_response.status_code} - {delete_artist_response.text}")
+```
 
 ### Logging out of an account:
 

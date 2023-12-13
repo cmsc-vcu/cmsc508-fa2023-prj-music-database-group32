@@ -9,7 +9,7 @@ from tabulate import tabulate
 from dotenv import load_dotenv
 from IPython.display import display, Markdown
 import pymysql
-from datetime import time
+from datetime import time, datetime
 import json
 import secrets
 # note to self: add ?token=285247389 for user authentication
@@ -201,6 +201,7 @@ def get_artists():
 
 # Create a user with the given name, password, and the account type
 # If the user exists with the given user name, then return error
+# Create a user with the given, name, password, and account type
 @app.route('/create_user', methods=['POST'])
 def create_user():
     # Get the new user's name, password, and account type from the request
@@ -212,27 +213,31 @@ def create_user():
     # If the request has name, password, and the account type for the user:
     # Check if there's already a user with the given name.
     # If there's no user already with the given name, then create it.        
-    if user_name and user_password and user_account_type:
+    if user_name:
+        if user_password:
+            if user_account_type:
 
-        # Check if there's any user with the asked name and set it to "database_user"
-        result = db.session.execute(text("SELECT * FROM user WHERE user_name = :user_name"), {"user_name": user_name}).fetchone();
-        user_data = [{'user_name': user.user_name} for user in result]
-        
-        # If the user already exists, print a message to user to try different name
-        if user_data:
-            return jsonify({'message': 'A user with the given name already exists. Please try a different name.'});
-        
-        # If a user doesn't exist with the given name, then create it
+                # Check if there's any user with the asked name and set it to "database_user"
+                result = db.session.execute(text("SELECT * FROM user WHERE user_name = :user_name"), {"user_name": user_name}).fetchone()
+
+                # If the user already exists, print a message to the user to try a different name
+                if result:
+                    return jsonify({'message': 'A user with the given name already exists. Please try a different name.'})
+                
+                # If a user doesn't exist with the given name, then create it
+                else:
+                    db.session.execute(text("INSERT INTO user (user_name, password, account_type) VALUES (:user_name, :password, :account_type)"), {"user_name": user_name, "password": user_password, "account_type": user_account_type})
+                    db.session.commit()
+
+                    # Print success message
+                    return jsonify({'message': 'The user is created successfully'})
+            else:
+                return jsonify({'error': "The required the account type is not provided."})
         else:
-            db.session.execute(text("INSERT INTO user (user_name, password, account_type) VALUES (:user_name, :password, :account_type)"),{"user_name": user_name, "password": user_password, "account_type": user_account_type});
-            db.session.commit();
-
-            # Print success message
-            return jsonify({'message': 'The user is created successfully'});
-
-    # If the request has no name/password/account type, then print error 
+            return jsonify({'error': "The required password is not provided."})
+    # If the request has no name/password/account type, then print an error 
     else:
-        return jsonify({'error': "The required information user name, password, and/or the account type are not provided."});
+        return jsonify({'error': "The required user name is not provided."})
 
 # To create an artist
 @app.route('/create_artist', methods=['POST'])
