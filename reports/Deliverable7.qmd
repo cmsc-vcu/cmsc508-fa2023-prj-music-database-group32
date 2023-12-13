@@ -21,6 +21,7 @@ This final report serves as an extension to deliverable 4. It covers everything 
 ## Links to your source code 
 
 [DDL](https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32/blob/main/src/Group%20Project%20Database.session.sql)
+
 [API](https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32/blob/main/src/app.py)
 
 ### Github Page 
@@ -31,15 +32,13 @@ This final report serves as an extension to deliverable 4. It covers everything 
 
 [Music Database Repository](https://github.com/cmsc-vcu/cmsc508-fa2023-prj-music-database-group32)
 
-## Other Links
-
 ### Videos
 
 [Deliverable 3 Video](https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+3+-+Version+2/1_thnnkrtm)
 
 [Deliverable 4 Video](https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+4/1_xyo18fcy)
 
-[Deliverable 7 Video](https://vcu.mediaspace.kaltura.com/media/Deliverable+7/1_w9v8u66l)
+[Deliverable 7 Video](https://vcu.mediaspace.kaltura.com/media/Deliverable+7/1_nwcbdq5x)
 
 ### HTML Documents
 

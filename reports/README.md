@@ -42,7 +42,7 @@ To render the Deliverable4.qmd file into Deliverable4.html file, “quarto rende
 
 [Deliverable 4 Video](https://vcu.mediaspace.kaltura.com/media/Project+Deliverable+4/1_xyo18fcy)
 
-[Deliverable 7 Video](https://vcu.mediaspace.kaltura.com/media/Deliverable+7/1_w9v8u66l)
+[Deliverable 7 Video](https://vcu.mediaspace.kaltura.com/media/Deliverable+7/1_nwcbdq5x)
 
 ### HTML Documents
 
